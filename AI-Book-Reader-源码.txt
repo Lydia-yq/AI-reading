@@ -12,7 +12,10 @@ button{cursor:pointer;font-family:inherit;border:none;background:none;color:inhe
 input,textarea,select{font-family:inherit;font-size:14px}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:#e0d8c8;border-radius:3px}
 .app{display:flex;height:100vh}
-.sidebar{width:200px;background:#2c3e6b;color:#cdd5e4;display:flex;flex-direction:column;flex-shrink:0}
+.sidebar{width:200px;background:#2c3e6b;color:#cdd5e4;display:flex;flex-direction:column;flex-shrink:0;transition:width .28s cubic-bezier(.4,0,.2,1);overflow:hidden}
+.sidebar.collapsed{width:56px}
+.sidebar.collapsed .logo-text,.sidebar.collapsed .nav-item span:last-child,.sidebar.collapsed .sidebar-footer{opacity:0;width:0;overflow:hidden;white-space:nowrap}
+.sidebar .logo-text,.sidebar .nav-item span:last-child,.sidebar .sidebar-footer{transition:opacity .15s ease;white-space:nowrap}
 .sidebar-logo{padding:14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,.1)}
 .logo-icon{width:30px;height:30px;background:#8b6914;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;font-size:13px}
 .logo-text{font-size:14px;font-weight:600;color:#fff}
@@ -36,6 +39,14 @@ input,textarea,select{font-family:inherit;font-size:14px}
 .book-card{background:#fffdf7;border:1px solid #e0d8c8;border-radius:8px;overflow:hidden;cursor:pointer;transition:transform .15s;position:relative}
 .book-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
 .book-cover{width:100%;height:190px;background:linear-gradient(135deg,#2c3e6b,#4a6fa5);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:600;text-align:center;padding:10px}
+.book-menu-btn{position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.45);color:#fff;display:none;align-items:center;justify-content:center;font-size:16px;line-height:1;cursor:pointer;z-index:5;transition:background .15s}
+.book-card:hover .book-menu-btn{display:flex}
+.book-menu-btn:hover{background:rgba(0,0,0,.7)}
+.book-menu{position:absolute;top:38px;right:8px;background:#fffdf7;border:1px solid #e0d8c8;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.15);padding:4px;z-index:10;display:none;min-width:120px}
+.book-menu.show{display:block}
+.book-menu-item{padding:8px 12px;font-size:13px;color:#3a3226;cursor:pointer;border-radius:6px;display:flex;align-items:center;gap:8px}
+.book-menu-item:hover{background:#f5f0e6}
+.book-menu-item.danger{color:#c0392b}
 .book-info{padding:9px 11px}.book-title{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .book-progress{font-size:11px;color:#8a7e6d;margin-top:3px}
 .progress-bar{height:3px;background:#e0d8c8;border-radius:2px;margin-top:5px;overflow:hidden}
@@ -52,6 +63,29 @@ input,textarea,select{font-family:inherit;font-size:14px}
 .reader-content{flex:1;overflow-y:auto;padding:36px 56px;transition:background .3s,color .3s}
 .reader-content .ch-title{font-size:22px;font-weight:700;margin-bottom:22px;text-align:center}
 .reader-content p{margin-bottom:1em;line-height:1.8;text-indent:2em}
+.para-wrapper{margin-bottom:1.2em}
+.para-wrapper .original{margin-bottom:0}
+.translation-box{margin-top:6px;margin-left:2em;padding:8px 12px;background:rgba(139,105,20,.06);border-left:3px solid #8b6914;border-radius:0 6px 6px 0;font-size:.9em;color:#5a4a2a;line-height:1.7;white-space:pre-wrap}
+.translation-box.loading{color:#8a7e6d;font-style:italic}
+.translation-box.error{color:#c0392b;cursor:pointer;background:rgba(192,57,43,.06);border-left-color:#c0392b}
+.bilingual-btn.active{background:#8b6914!important;color:#fff!important;border-color:#8b6914!important}
+.character-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.character-card{background:#fffdf7;border:1px solid #e0d8c8;border-radius:8px;padding:12px;cursor:pointer;transition:all .15s}
+.character-card:hover{border-color:#8b6914;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.character-card .char-name{font-size:15px;font-weight:700;color:#2c3e6b;margin-bottom:4px}
+.character-card .char-desc{font-size:12px;color:#8a7e6d;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.character-card .char-meta{font-size:11px;color:#8a7e6d;margin-bottom:6px}
+.character-card .char-traits{display:flex;flex-wrap:wrap;gap:4px}
+.character-detail{margin-top:10px;padding-top:10px;border-top:1px solid #e0d8c8;font-size:12px;color:#3a3226;display:none}
+.character-card.expanded .character-detail{display:block}
+.character-detail .rel-item{padding:3px 0;color:#5a4a2a}
+.character-detail .ch-jump{display:inline-block;margin:2px 4px 2px 0;padding:2px 8px;background:rgba(44,62,107,.1);color:#2c3e6b;border-radius:10px;font-size:11px;cursor:pointer}
+.character-detail .ch-jump:hover{background:rgba(44,62,107,.2)}
+.relation-graph{position:relative;width:100%;height:340px;background:#faf6ee;border-radius:8px;overflow:hidden;margin-top:10px}
+.relation-node{position:absolute;padding:6px 12px;background:#2c3e6b;color:#fff;border-radius:16px;font-size:12px;font-weight:600;white-space:nowrap;transform:translate(-50%,-50%);z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.relation-node.secondary{background:#8b6914}
+.relation-line{position:absolute;height:2px;background:#c0b8a8;transform-origin:0 50%;z-index:1}
+.relation-label{position:absolute;font-size:10px;color:#8a7e6d;background:#faf6ee;padding:1px 4px;border-radius:3px;transform:translate(-50%,-50%);z-index:3;white-space:nowrap}
 .reader-pager{display:flex;justify-content:space-between;padding:10px 56px;border-top:1px solid #e0d8c8;background:#fffdf7}
 .theme-sepia{background:#f7f1e3;color:#4a3f35}.theme-paper{background:#fff;color:#1f2937}
 .theme-green{background:#cce8cf;color:#1f3b22}.theme-night{background:#1a1a2e;color:#d4d4d8}.theme-amber{background:#1c1917;color:#d6d3d1}
@@ -125,34 +159,34 @@ input,textarea,select{font-family:inherit;font-size:14px}
 <body>
 <div class="app">
 <aside class="sidebar">
-<div class="sidebar-logo"><div class="logo-icon">ABR</div><div class="logo-text">AI Book Reader</div></div>
+<div class="sidebar-logo"><div class="logo-icon">ABR</div><div class="logo-text">AI 英语精读</div></div>
 <nav class="nav" id="nav">
-<div class="nav-item active" data-page="shelf"><span class="icon">📚</span><span>My Shelf</span></div>
-<div class="nav-item" data-page="vocabulary"><span class="icon">📖</span><span>Vocabulary</span></div>
-<div class="nav-item" data-page="notes"><span class="icon">📝</span><span>Notes</span></div>
-<div class="nav-item" data-page="quiz"><span class="icon">❓</span><span>Quizzes</span></div>
-<div class="nav-item" data-page="wrong"><span class="icon">❌</span><span>Wrong Book</span></div>
-<div class="nav-item" data-page="dashboard"><span class="icon">📊</span><span>Dashboard</span></div>
-<div class="nav-item" data-page="settings"><span class="icon">⚙️</span><span>Settings</span></div>
+<div class="nav-item active" data-page="shelf"><span class="icon">📚</span><span>书架</span></div>
+<div class="nav-item" data-page="vocabulary"><span class="icon">📖</span><span>生词本</span></div>
+<div class="nav-item" data-page="notes"><span class="icon">📝</span><span>笔记</span></div>
+<div class="nav-item" data-page="quiz"><span class="icon">❓</span><span>习题</span></div>
+<div class="nav-item" data-page="wrong"><span class="icon">❌</span><span>错题本</span></div>
+<div class="nav-item" data-page="dashboard"><span class="icon">📊</span><span>学习数据</span></div>
+<div class="nav-item" data-page="settings"><span class="icon">⚙️</span><span>设置</span></div>
 </nav>
-<div class="sidebar-footer">v1.0 - Kimi Powered</div>
+<div class="sidebar-footer">v1.0 · Kimi 驱动</div>
 </aside>
 <div class="main">
-<header class="topbar"><button class="btn btn-sm btn-outline" onclick="var sb=document.querySelector('.sidebar');sb.style.width=sb.style.width==='52px'?'200px':'52px'">Menu</button><span id="pageTitle">My Shelf</span></header>
+<header class="topbar"><button class="btn btn-sm btn-outline" onclick="toggleSidebar()">☰ 菜单</button><span id="pageTitle">书架</span></header>
 <div class="content" id="content"></div>
 </div>
 </div>
-<div class="selection-toolbar" id="selBar"><button onclick="analyzeSel()">Analyze</button><button onclick="genQuizSel()">Quiz</button><button onclick="noteSel()">Note</button></div>
+<div class="selection-toolbar" id="selBar"><button onclick="analyzeSel()">📊 分析</button><button onclick="genQuizSel()">❓ 出题</button><button onclick="noteSel()">📝 记笔记</button></div>
 <div class="word-popup" id="wordPop" style="display:none"></div>
 <div class="drawer-overlay" id="dOverlay" onclick="closeDrawer()"></div>
-<div class="drawer" id="drawer"><div class="drawer-header"><b>Paragraph Analysis</b><button onclick="closeDrawer()">X</button></div>
+<div class="drawer" id="drawer"><div class="drawer-header"><b>段落分析</b><button onclick="closeDrawer()">×</button></div>
 <div class="drawer-body"><div class="module-check">
-<label><input type="checkbox" value="main_idea" checked>Main Idea</label>
-<label><input type="checkbox" value="vocabulary" checked>Vocabulary</label>
-<label><input type="checkbox" value="rhetoric">Rhetoric</label>
-<label><input type="checkbox" value="culture">Culture</label>
-<label><input type="checkbox" value="translation" checked>Translation</label>
-</div><div id="aResult"></div><button class="btn btn-primary" id="aBtn" onclick="runAnalyze()" style="margin-top:14px;width:100%">Analyze</button></div></div>
+<label><input type="checkbox" value="main_idea" checked>主旨大意</label>
+<label><input type="checkbox" value="vocabulary" checked>核心词汇</label>
+<label><input type="checkbox" value="rhetoric">修辞分析</label>
+<label><input type="checkbox" value="culture">文化背景</label>
+<label><input type="checkbox" value="translation" checked>中文翻译</label>
+</div><div id="aResult"></div><button class="btn btn-primary" id="aBtn" onclick="runAnalyze()" style="margin-top:14px;width:100%">开始分析</button></div></div>
 <div class="modal-overlay" id="mOverlay"><div class="modal" id="mContent"></div></div>
 <div class="toast-container" id="toasts"></div>
 <script>
@@ -170,8 +204,8 @@ function idbPut(k,v){memStore[k]=v;try{localStorage.setItem('__abr_'+k,JSON.stri
 function idbGet(k){if(k in memStore)return Promise.resolve(memStore[k]);try{var r=localStorage.getItem('__abr_'+k);if(r)return Promise.resolve(JSON.parse(r))}catch(e){}return Promise.resolve(undefined)}
 function idbDel(k){delete memStore[k];try{localStorage.removeItem('__abr_'+k)}catch(e){}return Promise.resolve()}
 var LS={get:function(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){toast('Storage failed','error')}}};
-var K={BOOKS:'abr_books',VOCAB:'abr_vocab',NOTES:'abr_notes',TAGS:'abr_tags',QUIZZES:'abr_quizzes',RECORDS:'abr_records',WRONG:'abr_wrong',STATS:'abr_stats',SETTINGS:'abr_settings'};
-var DEF_SET={ai:{provider:'kimi',apiKey:'',model:'moonshot-v1-8k',baseUrl:'https://api.moonshot.cn/v1'},reading:{fontSize:18,lineHeight:1.8,theme:'theme-sepia'}};
+var K={BOOKS:'abr_books',VOCAB:'abr_vocab',NOTES:'abr_notes',TAGS:'abr_tags',QUIZZES:'abr_quizzes',RECORDS:'abr_records',WRONG:'abr_wrong',STATS:'abr_stats',SETTINGS:'abr_settings',TRANS:'abr_trans',CHARS:'abr_chars'};
+var DEF_SET={ai:{provider:'kimi',apiKey:'',model:'moonshot-v1-8k',baseUrl:'https://api.moonshot.cn/v1'},reading:{fontSize:18,lineHeight:1.8,theme:'theme-sepia',bilingual:false}};
 var MOCK_BOOKS=[
 {id:'b1',title:'The Great Gatsby',cover:'',format:'txt',progress:35,currentChapter:1,totalChapters:3,chapterTitles:['Chapter 1','Chapter 2','Chapter 3'],archived:false,createdAt:Date.now()-432000000,lastReadAt:Date.now()-86400000,fileKey:'m1',source:'mock'},
 {id:'b2',title:'Pride and Prejudice',cover:'',format:'txt',progress:12,currentChapter:0,totalChapters:3,chapterTitles:['Chapter 1','Chapter 2','Chapter 3'],archived:false,createdAt:Date.now()-259200000,lastReadAt:Date.now()-172800000,fileKey:'m2',source:'mock'},
@@ -181,8 +215,8 @@ m1:["In my younger and more vulnerable years my father gave me some advice that 
 m2:["It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families.","Mr. Bennet was among the earliest of those who waited on Mr. Bingley. He had always intended to visit him, though to the last always assuring his wife that he should not go.","Mr. Darcy soon drew the attention of the room by his fine, tall person, handsome features, noble mien, and the report which was in general circulation within five minutes after his entrance, of his having ten thousand a year."],
 m3:["It was a bright cold day in April, and the clocks were striking thirteen. Winston Smith, his chin nuzzled into his breast in an effort to escape the vile wind, slipped quickly through the glass doors of Victory Mansions.","The Ministry of Truth was startlingly different from any other object in sight. It was an enormous pyramidal structure of glittering white concrete, soaring up, terrace after terrace, three hundred metres into the air."]
 };
-var S={books:LS.get(K.BOOKS,MOCK_BOOKS),vocab:LS.get(K.VOCAB,[]),notes:LS.get(K.NOTES,[]),tags:LS.get(K.TAGS,[{id:'t1',name:'Important',color:'#e74c3c'},{id:'t2',name:'Question',color:'#f39c12'},{id:'t3',name:'Quote',color:'#27ae60'}]),quizzes:LS.get(K.QUIZZES,[]),records:LS.get(K.RECORDS,[]),wrong:LS.get(K.WRONG,[]),stats:LS.get(K.STATS,{totalBooks:3,totalWordsLookedUp:0,totalQuizzesTaken:0,averageAccuracy:0}),settings:LS.get(K.SETTINGS,DEF_SET),page:'shelf',book:null,chapter:0,selText:'',tab:'all'};
-function save(){LS.set(K.BOOKS,S.books);LS.set(K.VOCAB,S.vocab);LS.set(K.NOTES,S.notes);LS.set(K.TAGS,S.tags);LS.set(K.QUIZZES,S.quizzes);LS.set(K.RECORDS,S.records);LS.set(K.WRONG,S.wrong);LS.set(K.STATS,S.stats);LS.set(K.SETTINGS,S.settings)}
+var S={books:LS.get(K.BOOKS,MOCK_BOOKS),vocab:LS.get(K.VOCAB,[]),notes:LS.get(K.NOTES,[]),tags:LS.get(K.TAGS,[{id:'t1',name:'重要',color:'#e74c3c'},{id:'t2',name:'Question',color:'#f39c12'},{id:'t3',name:'Quote',color:'#27ae60'}]),quizzes:LS.get(K.QUIZZES,[]),records:LS.get(K.RECORDS,[]),wrong:LS.get(K.WRONG,[]),stats:LS.get(K.STATS,{totalBooks:3,totalWordsLookedUp:0,totalQuizzesTaken:0,averageAccuracy:0}),settings:LS.get(K.SETTINGS,DEF_SET),translations:LS.get(K.TRANS,{}),characters:LS.get(K.CHARS,{}),page:'shelf',book:null,chapter:0,selText:'',tab:'all'};
+function save(){LS.set(K.BOOKS,S.books);LS.set(K.VOCAB,S.vocab);LS.set(K.NOTES,S.notes);LS.set(K.TAGS,S.tags);LS.set(K.QUIZZES,S.quizzes);LS.set(K.RECORDS,S.records);LS.set(K.WRONG,S.wrong);LS.set(K.STATS,S.stats);LS.set(K.SETTINGS,S.settings);LS.set(K.TRANS,S.translations);LS.set(K.CHARS,S.characters)}
 function callAI(prompt,opt){
   var apiKey=S.settings.ai.apiKey,model=S.settings.ai.model,baseUrl=S.settings.ai.baseUrl;
   if(!apiKey)return Promise.reject(new Error('Please set Kimi API Key in Settings'));
@@ -226,7 +260,7 @@ function parseBook(file,onProg){
     var chs=detectChapters(clean);
     var fl=clean.split('\n').slice(0,5).filter(function(l){return l.trim()});
     if(fl.length>0&&fl[0].length<80&&!/^(chapter|book|part)/i.test(fl[0]))title=fl[0].trim();
-    if(onProg)onProg({current:100,total:100,stage:'Done'});
+    if(onProg)onProg({current:100,total:100,stage:'完成'});
     return{title:title,format:fmt,chapters:chs.map(function(c){return c.content}),chapterTitles:chs.map(function(c){return c.title}),fileSize:file.size};
   });
 }
@@ -259,41 +293,47 @@ function parsePDF(file,onProg){
   });
 }
 function parseDOCX(file,onProg){if(onProg)onProg({current:30,total:100,stage:'Parsing Word'});return mammoth.extractRawText({arrayBuffer:file.arrayBuffer()}).then(function(r){return r.value||''})}
-var TITLES={shelf:'My Shelf',vocabulary:'Vocabulary',notes:'Notes',quiz:'Quizzes',wrong:'Wrong Book',dashboard:'Dashboard',settings:'Settings',reader:'Reading',bookdetail:'Book Details'};
+var TITLES={shelf:'书架',vocabulary:'生词本',notes:'笔记',quiz:'习题',wrong:'错题本',dashboard:'学习数据',settings:'设置',reader:'阅读中',bookdetail:'书籍详情'};
+function toggleSidebar(){document.querySelector('.sidebar').classList.toggle('collapsed')}
+function toggleBookMenu(id,e){e.stopPropagation();var m=document.getElementById('menu-'+id);var wasOpen=m.classList.contains('show');document.querySelectorAll('.book-menu').forEach(function(x){x.classList.remove('show')});if(!wasOpen)m.classList.add('show')}
+document.addEventListener('click',function(){document.querySelectorAll('.book-menu').forEach(function(x){x.classList.remove('show')})});
+function deleteBook(id){if(!confirm('确定删除这本书吗？阅读进度将一并丢失。'))return;var b=S.books.find(function(x){return x.id===id});if(b&&b.fileKey)idbDel(b.fileKey);S.books=S.books.filter(function(x){return x.id!==id});S.stats.totalBooks=S.books.length;save();toast('已删除','success');rShelf()}
+function archiveBook(id){var b=S.books.find(function(x){return x.id===id});if(!b)return;b.archived=!b.archived;save();toast(b.archived?'已归档':'已取消归档','success');rShelf()}
 function nav(page,p){$('#wordPop').style.display='none';$('#selBar').classList.remove('show');S.page=page;$$('.nav-item').forEach(function(e){e.classList.toggle('active',e.dataset.page===page)});$('#pageTitle').textContent=TITLES[page]||'';var R={shelf:rShelf,vocabulary:rVocab,notes:rNotes,quiz:rQuiz,wrong:rWrong,dashboard:rDash,settings:rSettings,reader:rReader,bookdetail:rDetail};(R[page]||rShelf)(p||{})}
 $$('.nav-item').forEach(function(e){e.addEventListener('click',function(){nav(e.dataset.page)})});
 function rShelf(){
   var books=S.books.filter(function(b){return S.tab==='all'?!b.archived:S.tab==='archived'?b.archived:!b.archived&&b.progress>0&&b.progress<100});
-  var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h2 style="font-size:19px">My Shelf</h2><button class="btn btn-primary" onclick="document.getElementById(\'fi\').click()">Upload Book</button><input type="file" id="fi" accept=".epub,.pdf,.txt,.docx" multiple style="display:none" onchange="handleUpload(this.files)"></div>';
-  html+='<div class="shelf-tabs"><div class="shelf-tab '+(S.tab==='all'?'active':'')+'" onclick="S.tab=\'all\';rShelf()">All</div><div class="shelf-tab '+(S.tab==='reading'?'active':'')+'" onclick="S.tab=\'reading\';rShelf()">Reading</div><div class="shelf-tab '+(S.tab==='archived'?'active':'')+'" onclick="S.tab=\'archived\';rShelf()">Archived</div></div>';
-  html+='<div class="upload-zone" id="uz" onclick="document.getElementById(\'fi\').click()"><div class="icon">File</div><div style="font-size:14px;font-weight:500">Click or drag to upload</div><div style="font-size:12px;color:#8a7e6d;margin-top:6px">Supports EPUB / PDF / TXT / Word(.docx) - Books stay in your browser</div></div>';
-  html+='<div class="book-grid">'+(books.length===0?'<div class="empty-state" style="grid-column:1/-1"><div class="icon">Books</div><div>Shelf is empty</div></div>':books.map(function(b){return '<div class="book-card" onclick="openBook(\''+b.id+'\')"><div class="book-cover">'+(b.cover?'<img src="'+b.cover+'" style="width:100%;height:100%;object-fit:cover">':b.title)+'</div><div class="book-info"><div class="book-title">'+b.title+'</div><div class="book-progress">'+b.progress+'% - '+b.totalChapters+' chs</div><div class="progress-bar"><div class="progress-fill" style="width:'+b.progress+'%"></div></div></div></div>'}).join(''))+'</div>';
+  var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h2 style="font-size:19px">我的书架</h2><button class="btn btn-primary" onclick="document.getElementById(\'fi\').click()">上传书籍</button><input type="file" id="fi" accept=".epub,.pdf,.txt,.docx" multiple style="display:none" onchange="handleUpload(this.files)"></div>';
+  html+='<div class="shelf-tabs"><div class="shelf-tab '+(S.tab==='all'?'active':'')+'" onclick="S.tab=\'all\';rShelf()">全部</div><div class="shelf-tab '+(S.tab==='reading'?'active':'')+'" onclick="S.tab=\'reading\';rShelf()">在读</div><div class="shelf-tab '+(S.tab==='archived'?'active':'')+'" onclick="S.tab=\'archived\';rShelf()">已归档</div></div>';
+  html+='<div class="upload-zone" id="uz" onclick="document.getElementById(\'fi\').click()"><div class="icon">📁</div><div style="font-size:14px;font-weight:500">点击或拖拽上传</div><div style="font-size:12px;color:#8a7e6d;margin-top:6px">支持 EPUB / PDF / TXT / Word(.docx) · 数据保存在浏览器本地</div></div>';
+  html+='<div class="book-grid">'+(books.length===0?'<div class="empty-state" style="grid-column:1/-1"><div class="icon">📚</div><div>书架空空如也，上传一本书开始阅读吧</div></div>':books.map(function(b){return '<div class="book-card" onclick="openBook(\''+b.id+'\')"><div class="book-menu-btn" onclick="event.stopPropagation();toggleBookMenu(\''+b.id+'\',event)">⋮</div><div class="book-menu" id="menu-'+b.id+'" onclick="event.stopPropagation()"><div class="book-menu-item" onclick="archiveBook(\''+b.id+'\')">'+(b.archived?'📤 取消归档':'📦 归档')+'</div><div class="book-menu-item danger" onclick="deleteBook(\''+b.id+'\')">🗑 删除</div></div><div class="book-cover">'+(b.cover?'<img src="'+b.cover+'" style="width:100%;height:100%;object-fit:cover">':b.title)+'</div><div class="book-info"><div class="book-title">'+b.title+'</div><div class="book-progress">'+b.progress+'% · '+b.totalChapters+' 章</div><div class="progress-bar"><div class="progress-fill" style="width:'+b.progress+'%"></div></div></div></div>'}).join(''))+'</div>';
   $('#content').innerHTML=html;
   var z=$('#uz');z.addEventListener('dragover',function(e){e.preventDefault();z.style.borderColor='#2c3e6b'});z.addEventListener('dragleave',function(){z.style.borderColor='#e0d8c8'});z.addEventListener('drop',function(e){e.preventDefault();z.style.borderColor='#e0d8c8';handleUpload(e.dataTransfer.files)});
 }
 function handleUpload(files){
   var chain=Promise.resolve();
   for(var fi=0;fi<files.length;fi++){(function(file){var fk;chain=chain.then(function(){
-    if(!/\.(epub|pdf|txt|docx)$/.test(file.name.toLowerCase())){toast('Unsupported: '+file.name,'error');return}
+    if(!/\.(epub|pdf|txt|docx)$/.test(file.name.toLowerCase())){toast('不支持的格式: '+file.name,'error');return}
     var pe=document.createElement('div');pe.className='upload-progress';pe.innerHTML='<div style="font-size:13px;font-weight:500;margin-bottom:6px">'+file.name+'</div><div id="ps" style="font-size:11px;color:#8a7e6d;margin-bottom:5px">Preparing...</div><div style="height:5px;background:#e0d8c8;border-radius:3px;overflow:hidden"><div id="pf" style="height:100%;background:#2c3e6b;transition:width .2s;width:0%"></div></div>';document.body.appendChild(pe);
     return parseBook(file,function(p){pe.querySelector('#ps').textContent=p.stage+' ('+p.current+'/'+p.total+')';pe.querySelector('#pf').style.width=p.current+'%'}).then(function(r){
       fk=genId('bf');return idbPut(fk,r.chapters).then(function(){return r})
     }).then(function(r){
       S.books.unshift({id:genId('book'),title:r.title,cover:'',format:r.format,progress:0,currentChapter:0,totalChapters:r.chapters.length,chapterTitles:r.chapterTitles,archived:false,createdAt:Date.now(),lastReadAt:0,fileKey:fk,source:'local'});
-      S.stats.totalBooks=S.books.length;save();toast('Imported: '+r.title+' ('+r.chapters.length+' chapters)','success');
-    }).catch(function(e){toast('Import failed: '+e.message,'error')}).then(function(){pe.remove()});
+      S.stats.totalBooks=S.books.length;save();toast('已导入: '+r.title+' ('+r.chapters.length+' 章)','success');
+    }).catch(function(e){toast('导入失败: '+e.message,'error')}).then(function(){pe.remove()});
   }) })(files[fi])}
   chain.then(function(){rShelf()});
 }
 function openBook(id){S.book=S.books.find(function(b){return b.id===id});if(!S.book)return;nav('bookdetail',{id:id})}
 function rDetail(p){
   var b=S.book||S.books.find(function(x){return x.id===p.id});if(!b){nav('shelf');return}
-  var html='<button class="btn btn-outline btn-sm" onclick="nav(\'shelf\')" style="margin-bottom:14px">Back</button>';
+  var html='<button class="btn btn-outline btn-sm" onclick="nav(\'shelf\')" style="margin-bottom:14px">← 返回书架</button>';
   html+='<div class="book-detail"><div class="book-detail-cover"><div class="cover">'+(b.cover?'<img src="'+b.cover+'" style="width:100%;height:100%;object-fit:cover;border-radius:8px">':b.title)+'</div></div>';
-  html+='<div class="book-detail-info"><div class="book-detail-title">'+b.title+'</div><div class="book-detail-meta"><span>Format: '+b.format.toUpperCase()+'</span><span>Chapters: '+b.totalChapters+'</span><span>Progress: '+b.progress+'%</span><span>Last: '+(b.lastReadAt?fmtDate(b.lastReadAt):'Not started')+'</span></div>';
-  html+='<button class="btn btn-accent continue-btn" onclick="contRead(\''+b.id+'\')">'+(b.progress>0?'Continue Reading':'Start Reading')+'</button>';
+  html+='<div class="book-detail-info"><div class="book-detail-title">'+b.title+'</div><div class="book-detail-meta"><span>格式: '+b.format.toUpperCase()+'</span><span>章节: '+b.totalChapters+'</span><span>进度: '+b.progress+'%</span><span>上次: '+(b.lastReadAt?fmtDate(b.lastReadAt):'未开始')+'</span></div>';
+  html+='<button class="btn btn-accent continue-btn" onclick="contRead(\''+b.id+'\')">'+(b.progress>0?'继续阅读':'开始阅读')+'</button>';
   html+='<div class="progress-bar" style="margin-bottom:18px"><div class="progress-fill" style="width:'+b.progress+'%"></div></div>';
-  html+='<h3 style="font-size:15px;margin-bottom:10px">Table of Contents</h3><div class="chapter-list">'+(b.chapterTitles||[]).map(function(t,i){return '<div class="chapter-item '+(i===b.currentChapter?'current':'')+'" onclick="startRead(\''+b.id+'\','+i+')"><span style="font-size:11px;color:#8a7e6d;width:36px">'+(i+1)+'</span><span style="flex:1;font-size:13px">'+t+'</span></div>'}).join('')+'</div></div></div>';
+  html+='<h3 style="font-size:15px;margin-bottom:10px">目录</h3><div class="chapter-list">'+(b.chapterTitles||[]).map(function(t,i){return '<div class="chapter-item '+(i===b.currentChapter?'current':'')+'" onclick="startRead(\''+b.id+'\','+i+')"><span style="font-size:11px;color:#8a7e6d;width:36px">'+(i+1)+'</span><span style="flex:1;font-size:13px">'+t+'</span></div>'}).join('')+'</div>';
+  html+='<div style="margin-top:16px"><button class="btn btn-outline" style="width:100%" onclick="analyzeCharacters(\''+b.id+'\')">🔍 AI 分析全书角色</button></div></div></div>';
   $('#content').innerHTML=html;
 }
 function contRead(id){var b=S.books.find(function(x){return x.id===id});startRead(id,b.currentChapter||0)}
@@ -308,18 +348,29 @@ function rReader(p){
   };
   function renderReader(){
     var th=S.settings.reading.theme;
-    var html='<div class="reader-container"><div class="reader-toolbar"><button class="btn btn-sm btn-outline" onclick="nav(\'bookdetail\',{id:\''+b.id+'\'})">Back</button><span class="book-title">'+b.title+' - '+(b.chapterTitles?b.chapterTitles[ci]:'Chapter '+(ci+1))+'</span>';
+    var html='<div class="reader-container"><div class="reader-toolbar"><button class="btn btn-sm btn-outline" onclick="nav(\'bookdetail\',{id:\''+b.id+'\'})">← 返回</button><span class="book-title">'+b.title+' - '+(b.chapterTitles?b.chapterTitles[ci]:'Chapter '+(ci+1))+'</span>';
+    html+='<div class="toolbar-group"><button class="btn btn-sm btn-outline bilingual-btn '+(S.settings.reading.bilingual?'active':'')+'" onclick="toggleBilingual()">📖 双语</button><button class="btn btn-sm btn-outline" onclick="openCharacterDrawer()">👤 角色</button><button class="btn btn-sm btn-outline" onclick="openCharGraph()">📊 图谱</button></div>';
     html+='<div class="toolbar-group"><button class="btn btn-sm btn-outline" onclick="chFont(-1)">A-</button><span style="font-size:11px;min-width:22px;text-align:center" id="fsLbl">'+S.settings.reading.fontSize+'</span><button class="btn btn-sm btn-outline" onclick="chFont(1)">A+</button></div>';
     html+='<div class="toolbar-group"><div class="theme-dot '+(th==='theme-sepia'?'active':'')+'" style="background:#f7f1e3" onclick="setTheme(\'theme-sepia\')"></div><div class="theme-dot '+(th==='theme-paper'?'active':'')+'" style="background:#fff;border:1px solid #ddd" onclick="setTheme(\'theme-paper\')"></div><div class="theme-dot '+(th==='theme-green'?'active':'')+'" style="background:#cce8cf" onclick="setTheme(\'theme-green\')"></div><div class="theme-dot '+(th==='theme-night'?'active':'')+'" style="background:#1a1a2e" onclick="setTheme(\'theme-night\')"></div><div class="theme-dot '+(th==='theme-amber'?'active':'')+'" style="background:#1c1917" onclick="setTheme(\'theme-amber\')"></div></div></div>';
-    html+='<div class="reader-content '+th+'" id="rc" style="font-size:'+S.settings.reading.fontSize+'px;line-height:'+S.settings.reading.lineHeight+'"><div class="ch-title">'+(b.chapterTitles?b.chapterTitles[ci]:'Chapter '+(ci+1))+'</div>'+paras.map(function(pp,i){return '<p data-i="'+i+'">'+pp+'</p>'}).join('')+'</div>';
-    html+='<div class="reader-pager"><button class="btn btn-outline" '+(ci===0?'disabled':'')+' onclick="prevCh()">Prev</button><span style="font-size:12px;color:#8a7e6d;align-self:center">'+(ci+1)+' / '+b.totalChapters+'</span><button class="btn btn-outline" '+(ci>=b.totalChapters-1?'disabled':'')+' onclick="nextCh()">Next</button></div></div>';
+    var bi=S.settings.reading.bilingual;
+    var bk=b.id+'_'+ci;
+    var parasHtml=paras.map(function(pp,i){
+      if(bi){
+        var cached=S.translations[bk]&&S.translations[bk][i]?S.translations[bk][i]:null;
+        return '<div class="para-wrapper"><p class="original" data-i="'+i+'">'+pp+'</p><div class="translation-box '+(cached?'':'loading')+'" data-para-index="'+i+'">'+(cached||'翻译中...')+'</div></div>';
+      }
+      return '<p data-i="'+i+'">'+pp+'</p>';
+    }).join('');
+    html+='<div class="reader-content '+th+'" id="rc" style="font-size:'+S.settings.reading.fontSize+'px;line-height:'+S.settings.reading.lineHeight+'"><div class="ch-title">'+(b.chapterTitles?b.chapterTitles[ci]:'Chapter '+(ci+1))+'</div>'+parasHtml+'</div>';
+    html+='<div class="reader-pager"><button class="btn btn-outline" '+(ci===0?'disabled':'')+' onclick="prevCh()">← 上一章</button><span style="font-size:12px;color:#8a7e6d;align-self:center">第 '+(ci+1)+' / '+b.totalChapters+' 章</span><button class="btn btn-outline" '+(ci>=b.totalChapters-1?'disabled':'')+' onclick="nextCh()">下一章 →</button></div></div>';
     $('#content').innerHTML=html;
     b.progress=Math.round(((ci+1)/b.totalChapters)*100);save();
     var rc=$('#rc');rc.addEventListener('mouseup',onSel);rc.addEventListener('click',onWord);
+    if(bi){document.querySelectorAll('.translation-box.loading').forEach(function(el){var pi=parseInt(el.dataset.paraIndex);fetchTranslation(b.id,ci,pi,paras[pi],el)})}
   }
   loadContent();
 }
-function onSel(){var s=window.getSelection();var t=s.toString().trim();if(t.length>20){S.selText=t;var r=s.getRangeAt(0).getBoundingClientRect();var tb=$('#selBar');tb.style.top=(r.top-36+window.scrollY)+'px';tb.style.left=(r.left+window.scrollX)+'px';tb.classList.add('show')}else $('#selBar').classList.remove('show')}
+function onSel(){var s=window.getSelection();var t=s.toString().trim();if(t.length>20){S.selText=t;var r=s.getRangeAt(0).getBoundingClientRect();var tb=$('#selBar');tb.style.top=(r.top-44)+'px';tb.style.left='50%';tb.style.transform='translateX(-50%)';tb.classList.add('show')}else $('#selBar').classList.remove('show')}
 function onWord(e){
   if(e.target.tagName!=='P'&&!e.target.closest('p'))return;
   var s=window.getSelection();if(s.toString().trim().length>5)return;
@@ -332,115 +383,219 @@ function onWord(e){
 }
 function showWord(w,x,y){
   var p=$('#wordPop');p.style.display='block';p.style.left=Math.min(x,window.innerWidth-320)+'px';p.style.top=(y+10)+'px';
-  p.innerHTML='<div class="w-head"><span class="w-text">'+w+'</span><button onclick="document.getElementById(\'wordPop\').style.display=\'none\'">X</button></div><div style="color:#8a7e6d;font-style:italic">Looking up...</div>';
+  p.innerHTML='<div class="w-head"><span class="w-text">'+w+'</span><button onclick="document.getElementById(\'wordPop\').style.display=\'none\'">×</button></div><div style="color:#8a7e6d;font-style:italic">查询中...</div>';
+  var closeOnScroll=function(){$('#wordPop').style.display='none';window.removeEventListener('scroll',closeOnScroll)};
+  window.addEventListener('scroll',closeOnScroll,{passive:true});
   S.stats.totalWordsLookedUp++;save();
   callAI('Explain the English word "'+w+'". Output: 1. Phonetic 2. Part of speech + Chinese definition (2-3 meanings) 3. English example + Chinese translation. Be concise.').then(function(r){
-    p.innerHTML='<div class="w-head"><span class="w-text">'+w+'</span><button onclick="document.getElementById(\'wordPop\').style.display=\'none\'">X</button></div><div class="w-def">'+r.replace(/\n/g,'<br>')+'</div><div class="w-actions"><button class="btn btn-sm btn-accent" onclick="addVocab(\''+w+'\')">Add to Vocab</button><button class="btn btn-sm btn-outline" onclick="document.getElementById(\'wordPop\').style.display=\'none\'">Just this time</button></div>';
+    p.innerHTML='<div class="w-head"><span class="w-text">'+w+'</span><button onclick="document.getElementById(\'wordPop\').style.display=\'none\'">×</button></div><div class="w-def">'+r.replace(/\n/g,'<br>')+'</div><div class="w-actions"><button class="btn btn-sm btn-accent" onclick="addVocab(\''+w+'\')">加入生词本</button><button class="btn btn-sm btn-outline" onclick="document.getElementById(\'wordPop\').style.display=\'none\'">仅查看</button></div>';
     p._r=r;p._w=w;
-  }).catch(function(e){p.innerHTML='<div class="w-head"><span class="w-text">'+w+'</span><button onclick="document.getElementById(\'wordPop\').style.display=\'none\'">X</button></div><div style="color:#c0392b;font-size:12px">Failed: '+e.message+'</div><div class="w-actions"><button class="btn btn-sm btn-outline" onclick="showWord(\''+w+'\','+x+','+y+')">Retry</button></div>'});
+  }).catch(function(e){p.innerHTML='<div class="w-head"><span class="w-text">'+w+'</span><button onclick="document.getElementById(\'wordPop\').style.display=\'none\'">×</button></div><div style="color:#c0392b;font-size:12px">查询失败: '+e.message+'</div><div class="w-actions"><button class="btn btn-sm btn-outline" onclick="showWord(\''+w+'\','+x+','+y+')">重试</button></div>'});
 }
-function addVocab(w){var p=$('#wordPop');if(S.vocab.find(function(v){return v.word.toLowerCase()===w.toLowerCase()})){toast('Already in vocabulary','info');p.style.display='none';return}S.vocab.unshift({id:genId('voc'),word:w,definition:p._r||'',sourceBookId:S.book?S.book.id:'',sourceContext:S.selText||'',addedAt:Date.now(),reviewCount:0,masteryLevel:0});save();toast('Added to vocabulary','success');p.style.display='none'}
+function addVocab(w){var p=$('#wordPop');if(S.vocab.find(function(v){return v.word.toLowerCase()===w.toLowerCase()})){toast('已在生词本中','info');p.style.display='none';return}S.vocab.unshift({id:genId('voc'),word:w,definition:p._r||'',sourceBookId:S.book?S.book.id:'',sourceContext:S.selText||'',addedAt:Date.now(),reviewCount:0,masteryLevel:0});save();toast('已加入生词本','success');p.style.display='none'}
 function chFont(d){S.settings.reading.fontSize=Math.max(12,Math.min(32,S.settings.reading.fontSize+d));save();var rc=$('#rc');if(rc)rc.style.fontSize=S.settings.reading.fontSize+'px';var l=$('#fsLbl');if(l)l.textContent=S.settings.reading.fontSize}
 function setTheme(t){S.settings.reading.theme=t;save();var rc=$('#rc');if(rc){rc.className='reader-content '+t}}
+function toggleBilingual(){S.settings.reading.bilingual=!S.settings.reading.bilingual;save();rReader({chapter:S.chapter})}
+var transQueue=[],transActive=0,MAX_TRANS=3;
+function fetchTranslation(bk,ci,pi,text,el){
+  var key=bk+'_'+ci;
+  if(S.translations[key]&&S.translations[key][pi]){if(el){el.textContent=S.translations[key][pi];el.classList.remove('loading')}return}
+  transQueue.push({bk:bk,ci:ci,pi:pi,text:text,el:el});runTransQueue()
+}
+function runTransQueue(){
+  if(transActive>=MAX_TRANS||transQueue.length===0)return;
+  var t=transQueue.shift();transActive++;
+  var key=t.bk+'_'+t.ci;
+  callAI('You are a professional literary translator. Translate the following English text into Simplified Chinese.\nRequirements:\n1. Maintain the original style and tone (narrative, dialogue, or description).\n2. Use elegant, smooth, and native Chinese expressions.\n3. Do NOT add any explanations, notes, or extra content. ONLY output the translation.\n\nText to translate:\n"""\n'+t.text+'\n"""',{timeoutMs:45000}).then(function(r){
+    var tr=(r||'').trim();
+    if(!S.translations[key])S.translations[key]={};
+    S.translations[key][t.pi]=tr;save();
+    if(t.el){t.el.textContent=tr;t.el.classList.remove('loading')}
+  }).catch(function(e){
+    if(t.el){t.el.textContent='⚠️ 点击重试';t.el.classList.remove('loading');t.el.classList.add('error');t.el.onclick=function(){t.el.classList.remove('error');t.el.classList.add('loading');t.el.textContent='翻译中...';t.el.onclick=null;fetchTranslation(t.bk,t.ci,t.pi,t.text,t.el)}}
+  }).then(function(){transActive--;runTransQueue()})
+}
+function analyzeCharacters(bkId){
+  var b=S.books.find(function(x){return x.id===bkId});if(!b){toast('未找到书籍','error');return}
+  toast('正在分析角色...','info');
+  idbGet(b.fileKey).then(function(chapters){
+    if(!chapters){toast('未找到书籍内容，请重新上传','error');return}
+    var totalLen=chapters.reduce(function(s,c){return s+(c||'').length},0);
+    var batches=[];
+    if(totalLen<8000){
+      var txt=chapters.map(function(c,i){return 'Chapter '+(i+1)+': '+(b.chapterTitles&&b.chapterTitles[i]?b.chapterTitles[i]:'')+'\n'+(c||'').slice(0,500)}).join('\n\n');
+      batches=[txt]
+    }else{
+      for(var i=0;i<chapters.length;i+=3){
+        var group=chapters.slice(i,i+3);
+        var bt=group.map(function(c,j){return 'Chapter '+(i+j+1)+': '+(b.chapterTitles&&b.chapterTitles[i+j]?b.chapterTitles[i+j]:'')+'\n'+(c||'').slice(0,400)}).join('\n\n');
+        batches.push(bt)
+      }
+    }
+    var allChars=[];
+    var bi=0;
+    function nextBatch(){
+      if(bi>=batches.length){finishMerge();return}
+      callAI('You are a literary analysis expert. Analyze the following book chapters and extract all major and minor characters.\nBook Title: '+b.title+'\nChapters Content (Title + beginning text):\n'+batches[bi]+'\n\nOutput ONLY a valid JSON array (no markdown, no extra text). Each object must have:\n{"name":"Full Name","aliases":["other names","nicknames"],"description":"Brief role description in 20 words","traits":["trait1","trait2"],"relationships":[{"target":"CharacterName","relation":"relationship type"}]}\nIf a character has no relationships, provide an empty array.',{timeoutMs:60000}).then(function(r){
+        try{var arr=JSON.parse((r||'').replace(/```json|```/g,'').trim());if(Array.isArray(arr))allChars=allChars.concat(arr)}catch(e){}
+        bi++;nextBatch()
+      }).catch(function(e){toast('第 '+(bi+1)+' 批分析失败: '+e.message,'error');bi++;nextBatch()})
+    }
+    function finishMerge(){
+      var merged=[];
+      allChars.forEach(function(c){
+        var found=merged.find(function(m){return m.name.toLowerCase()===c.name.toLowerCase()||(c.aliases&&c.aliases.some(function(a){return a.toLowerCase()===m.name.toLowerCase()}))||(m.aliases&&m.aliases.some(function(a){return a.toLowerCase()===c.name.toLowerCase()}))});
+        if(found){found.aliases=Array.from(new Set((found.aliases||[]).concat(c.aliases||[])));found.traits=Array.from(new Set((found.traits||[]).concat(c.traits||[])));if(!found.description&&c.description)found.description=c.description;if(c.relationships){c.relationships.forEach(function(r){if(!found.relationships.some(function(x){return x.target===r.target}))found.relationships.push(r)})}}
+        else merged.push({name:c.name,aliases:c.aliases||[],description:c.description||'',traits:c.traits||[],relationships:c.relationships||[]})
+      });
+      merged.forEach(function(c){c.mentions=[];for(var i=0;i<chapters.length;i++){var ct=(chapters[i]||'').toLowerCase();var names=[c.name].concat(c.aliases||[]);if(names.some(function(n){return n&&ct.indexOf(n.toLowerCase())>=0}))c.mentions.push(i)}});
+      S.characters[bkId]={characters:merged,lastAnalyzedAt:Date.now(),chapterCount:chapters.length};save();
+      toast('找到 '+merged.length+' 个角色','success');
+      if(S.page==='bookdetail'){S.book=b;renderCharacterDrawer(bkId);$('#drawer').classList.add('show');$('#dOverlay').classList.add('show')}
+    }
+    nextBatch()
+  }).catch(function(e){toast('加载失败: '+e.message,'error')})
+}
+var charView='list';
+function openCharacterDrawer(){var b=S.book;if(!b)return;if(!S.characters[b.id]||!S.characters[b.id].characters||S.characters[b.id].characters.length===0){toast('暂无角色数据，请先在书籍详情页分析角色','info');analyzeCharacters(b.id);return}charView='list';renderCharacterDrawer(b.id);$('#drawer').classList.add('show');$('#dOverlay').classList.add('show')}
+function openCharGraph(){var b=S.book;if(!b)return;if(!S.characters[b.id]||!S.characters[b.id].characters||S.characters[b.id].characters.length===0){toast('暂无角色数据，正在分析...','info');analyzeCharacters(b.id);return}charView='graph';renderCharacterDrawer(b.id);$('#drawer').classList.add('show');$('#dOverlay').classList.add('show')}
+function renderCharacterDrawer(bkId){
+  var data=S.characters[bkId];if(!data){$('#drawer .drawer-header').innerHTML='<b>角色</b><button onclick="closeDrawer()">×</button>';$('#drawer .drawer-body').innerHTML='<div class="empty-state"><div class="icon">👤</div><div>暂无数据</div></div>';return}
+  var chars=data.characters;
+  $('#drawer .drawer-header').innerHTML='<b>角色 ('+chars.length+')</b><div style="display:flex;gap:6px"><button class="btn btn-sm '+(charView==='list'?'btn-primary':'btn-outline')+'" onclick="charView=\'list\';renderCharacterDrawer(\''+bkId+'\')">列表</button><button class="btn btn-sm '+(charView==='graph'?'btn-primary':'btn-outline')+'" onclick="charView=\'graph\';renderCharacterDrawer(\''+bkId+'\')">图谱</button><button onclick="closeDrawer()">×</button></div>';
+  if(charView==='list'){
+    $('#drawer .drawer-body').innerHTML='<div class="character-grid">'+chars.map(function(c,i){return '<div class="character-card" onclick="toggleCharDetail('+i+',\''+bkId+'\')"><div class="char-name">'+c.name+'</div><div class="char-desc">'+(c.description||'')+'</div><div class="char-meta">出现于 '+c.mentions.length+' 章</div><div class="char-traits">'+(c.traits||[]).slice(0,3).map(function(t){return '<span class="badge badge-primary">'+t+'</span>'}).join('')+'</div><div class="character-detail"><div style="margin-bottom:8px;color:#3a3226">'+(c.description||'')+'</div><div style="font-weight:600;margin-bottom:4px">人物关系：</div>'+(c.relationships||[]).map(function(r){return '<div class="rel-item">→ '+r.target+'（'+r.relation+'）</div>'}).join('')+'<div style="font-weight:600;margin:8px 0 4px">跳转章节：</div>'+(c.mentions||[]).map(function(ci){return '<span class="ch-jump" onclick="event.stopPropagation();closeDrawer();startRead(\''+bkId+'\','+ci+')">第 '+(ci+1)+' 章</span>'}).join('')+'</div></div>'}).join('')+'</div>';
+  }else{
+    $('#drawer .drawer-body').innerHTML='<div class="relation-graph" id="rGraph"></div>';
+    renderRelationGraph(bkId,chars)
+  }
+}
+function toggleCharDetail(i,bkId){var cards=document.querySelectorAll('#drawer .character-card');if(cards[i])cards[i].classList.toggle('expanded')}
+function renderRelationGraph(bkId,chars){
+  var g=$('#rGraph');if(!g)return;
+  var w=g.offsetWidth||420,h=340,cx=w/2,cy=h/2;
+  var main=chars.slice(0,1)[0];var others=chars.slice(1,9);
+  var html='';
+  if(main){html+='<div class="relation-node" style="left:'+cx+'px;top:'+cy+'px">'+main.name+'</div>'}
+  others.forEach(function(c,i){
+    var angle=(i/others.length)*Math.PI*2-Math.PI/2;var r=Math.min(w,h)*0.38;var x=cx+Math.cos(angle)*r,y=cy+Math.sin(angle)*r;
+    html+='<div class="relation-node secondary" style="left:'+x+'px;top:'+y+'px">'+c.name+'</div>';
+    if(main){var dx=x-cx,dy=y-cy,len=Math.sqrt(dx*dx+dy*dy);var rel=(main.relationships||[]).find(function(rr){return rr.target===c.name})||(c.relationships||[]).find(function(rr){return rr.target===main.name});
+    html+='<div class="relation-line" style="left:'+cx+'px;top:'+cy+'px;width:'+len+'px;transform:rotate('+Math.atan2(dy,dx)+'rad)"></div>';
+    if(rel)html+='<div class="relation-label" style="left:'+((cx+x)/2)+'px;top:'+((cy+y)/2)+'px">'+rel.relation+'</div>'}
+  });
+  g.innerHTML=html
+}
 function prevCh(){if(S.chapter>0){S.chapter--;rReader({chapter:S.chapter})}}
 function nextCh(){if(S.chapter<S.book.totalChapters-1){S.chapter++;rReader({chapter:S.chapter})}}
 function analyzeSel(){$('#selBar').classList.remove('show');$('#drawer').classList.add('show');$('#dOverlay').classList.add('show');$('#aResult').innerHTML='';$('#aBtn').style.display='block'}
 function closeDrawer(){$('#drawer').classList.remove('show');$('#dOverlay').classList.remove('show')}
+function mdToHtml(text){
+  return (text||'').split(/\n{2,}/).map(function(block){
+    block=block.trim();if(!block)return '';
+    if(/^### /.test(block))return '<h4 style="margin:14px 0 6px;color:#2c3e6b;font-size:14px;font-weight:700">'+block.replace(/^###\s*/,'')+'</h4>';
+    if(/^## /.test(block))return '<h3 style="margin:16px 0 8px;color:#2c3e6b;font-size:15px;font-weight:700">'+block.replace(/^##\s*/,'')+'</h3>';
+    if(/^# /.test(block))return '<h2 style="margin:18px 0 10px;color:#2c3e6b;font-size:16px;font-weight:700">'+block.replace(/^#\s*/,'')+'</h2>';
+    if(/^[-*]\s/.test(block))return '<ul style="margin:6px 0;padding-left:22px;line-height:1.7">'+block.split('\n').map(function(l){return '<li style="margin-bottom:3px">'+l.replace(/^[-*]\s*/,'')+'</li>'}).join('')+'</ul>';
+    if(/^\d+\.\s/.test(block))return '<ol style="margin:6px 0;padding-left:22px;line-height:1.7">'+block.split('\n').map(function(l){return '<li style="margin-bottom:3px">'+l.replace(/^\d+\.\s*/,'')+'</li>'}).join('')+'</ol>';
+    return '<p style="margin:6px 0;line-height:1.7">'+block.replace(/\n/g,'<br>')+'</p>';
+  }).join('');
+}
 function runAnalyze(){
   var mods=Array.from(document.querySelectorAll('#drawer .module-check input:checked')).map(function(c){return c.value});
-  var names={main_idea:'Main Idea',vocabulary:'Core Vocabulary',rhetoric:'Rhetoric',culture:'Cultural Background',translation:'Chinese Translation'};
-  var re=$('#aResult'),btn=$('#aBtn');btn.disabled=true;btn.textContent='Analyzing...';
-  re.innerHTML='<div style="color:#8a7e6d;font-style:italic">AI is analyzing...</div>';
-  callAI('Analyze the following English paragraph.\nParagraph:\n'+S.selText+'\nOutput sections: '+mods.map(function(m){return names[m]}).join(', ')+'\nUse Markdown.',{timeoutMs:45000}).then(function(r){
-    re.innerHTML=r.replace(/\n/g,'<br>').replace(/### /g,'<h4 style="margin:10px 0 5px;color:#2c3e6b">').replace(/<br><h4/g,'</p><h4').replace(/<\/h4>/g,'</h4><p>')+'</p>';
+  var names={main_idea:'主旨大意',vocabulary:'核心词汇',rhetoric:'修辞分析',culture:'文化背景',translation:'中文翻译'};
+  var re=$('#aResult'),btn=$('#aBtn');btn.disabled=true;btn.textContent='分析中...';
+  re.innerHTML='<div style="color:#8a7e6d;font-style:italic;text-align:center;padding:20px">AI 正在分析...</div>';
+  callAI('Analyze the following English paragraph.\nParagraph:\n'+S.selText+'\nOutput sections: '+mods.map(function(m){return names[m]}).join(', ')+'\nUse Markdown with ### for section headers.',{timeoutMs:45000}).then(function(r){
+    re.innerHTML=mdToHtml(r);
     btn.style.display='none';
-  }).catch(function(e){re.innerHTML='<div style="color:#c0392b">Failed: '+e.message+'</div>';btn.disabled=false;btn.textContent='Retry'});
+  }).catch(function(e){re.innerHTML='<div style="color:#c0392b;text-align:center;padding:14px">分析失败: '+e.message+'</div>';btn.disabled=false;btn.textContent='重试'});
 }
 function genQuizSel(){
   $('#selBar').classList.remove('show');
-  showModal('<div class="modal-title">Generate Quiz</div><div style="font-size:12px;color:#8a7e6d;margin-bottom:10px">From selection ('+S.selText.length+' chars)</div><div id="qgr" style="max-height:280px;overflow-y:auto"><div style="color:#8a7e6d;font-style:italic;text-align:center;padding:18px">AI is generating English questions...</div></div><div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Cancel</button></div>');
+  showModal('<div class="modal-title">生成习题</div><div style="font-size:12px;color:#8a7e6d;margin-bottom:10px">来自选段 ('+S.selText.length+' 字符)</div><div id="qgr" style="max-height:280px;overflow-y:auto"><div style="color:#8a7e6d;font-style:italic;text-align:center;padding:18px">AI 正在生成英文题目...</div></div><div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">取消</button></div>');
   callAI('Based on this passage, generate 5 multiple-choice reading comprehension questions in ENGLISH.\nPassage:\n'+S.selText+'\nOutput ONLY this JSON: [{"question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A","explanation":"Brief explanation, do NOT quote the original passage."}]\nAll in English. Strictly based on the passage. Keep explanation under 40 words.',{timeoutMs:60000}).then(function(r){
     var qs=[];try{var m=r.match(/\[[\s\S]*\]/);qs=JSON.parse(m?m[0]:r)}catch(e){throw new Error('Failed to parse response, please retry')}
     if(!Array.isArray(qs)||!qs.length)throw new Error('No valid questions generated');
     var qset={id:genId('quiz'),bookId:S.book?S.book.id:'',bookTitle:S.book?S.book.title:'',chapterTitle:S.book&&S.book.chapterTitles?S.book.chapterTitles[S.chapter]:'',sourceType:'paragraph',questions:qs.map(function(q,i){return {id:genId('q'),type:'choice',question:q.question,options:q.options,answer:q.answer,explanation:q.explanation||'',difficulty:1}}),createdAt:Date.now(),completed:false,correctCount:0};
     S.quizzes.unshift(qset);save();
-    $('#qgr').innerHTML='<div style="color:#27ae60;margin-bottom:10px">Generated '+qs.length+' English questions and saved</div>'+qs.map(function(q,i){return '<div style="margin-bottom:10px;padding:8px;background:#f5f0e6;border-radius:6px"><div style="font-weight:600;margin-bottom:4px;font-size:13px">'+(i+1)+'. '+q.question+'</div>'+(q.options||[]).map(function(o){return '<div style="font-size:12px;color:#8a7e6d">'+o+'</div>'}).join('')+'</div>'}).join('');
-    document.querySelector('.modal-actions').innerHTML='<button class="btn btn-outline" onclick="closeModal()">Close</button><button class="btn btn-primary" onclick="closeModal();nav(\'quiz\')">Go to Quiz</button>';
-  }).catch(function(e){$('#qgr').innerHTML='<div style="color:#c0392b;text-align:center;padding:18px">Failed: '+e.message+'</div>';document.querySelector('.modal-actions').innerHTML='<button class="btn btn-outline" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="genQuizSel()">Retry</button>'});
+    $('#qgr').innerHTML='<div style="color:#27ae60;margin-bottom:10px">已生成 '+qs.length+' 道英文题目并保存</div>'+qs.map(function(q,i){return '<div style="margin-bottom:10px;padding:8px;background:#f5f0e6;border-radius:6px"><div style="font-weight:600;margin-bottom:4px;font-size:13px">'+(i+1)+'. '+q.question+'</div>'+(q.options||[]).map(function(o){return '<div style="font-size:12px;color:#8a7e6d">'+o+'</div>'}).join('')+'</div>'}).join('');
+    document.querySelector('.modal-actions').innerHTML='<button class="btn btn-outline" onclick="closeModal()">关闭</button><button class="btn btn-primary" onclick="closeModal();nav(\'quiz\')">前往习题</button>';
+  }).catch(function(e){$('#qgr').innerHTML='<div style="color:#c0392b;text-align:center;padding:18px">失败: '+e.message+'</div>';document.querySelector('.modal-actions').innerHTML='<button class="btn btn-outline" onclick="closeModal()">取消</button><button class="btn btn-primary" onclick="genQuizSel()">重试</button>'});
 }
-function noteSel(){$('#selBar').classList.remove('show');showModal('<div class="modal-title">New Note</div><div class="form-group"><label class="form-label">Excerpt</label><textarea class="input" id="nEx" rows="4" style="resize:vertical">'+S.selText+'</textarea></div><div class="form-group"><label class="form-label">Remark</label><textarea class="input" id="nRe" rows="3" style="resize:vertical" placeholder="Your thoughts..."></textarea></div><div class="form-group"><label class="form-label">Tags</label><div id="nTags">'+S.tags.map(function(t){return '<label style="display:inline-flex;align-items:center;gap:3px;margin-right:10px;font-size:12px;cursor:pointer"><input type="checkbox" value="'+t.id+'"> '+t.name+'</label>'}).join('')+'</div></div><div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="saveNote()">Save</button></div>')}
-function saveNote(){var ex=$('#nEx').value.trim(),re=$('#nRe').value.trim(),tids=Array.from(document.querySelectorAll('#nTags input:checked')).map(function(c){return c.value});if(!ex){toast('Excerpt cannot be empty','error');return}S.notes.unshift({id:genId('note'),bookId:S.book?S.book.id:'',bookTitle:S.book?S.book.title:'',chapterTitle:S.book&&S.book.chapterTitles?S.book.chapterTitles[S.chapter]:'',excerpt:ex,remark:re,tagIds:tids,createdAt:Date.now(),updatedAt:Date.now()});save();closeModal();toast('Note saved','success')}
+function noteSel(){$('#selBar').classList.remove('show');showModal('<div class="modal-title">新建笔记</div><div class="form-group"><label class="form-label">原文摘录</label><textarea class="input" id="nEx" rows="4" style="resize:vertical">'+S.selText+'</textarea></div><div class="form-group"><label class="form-label">备注</label><textarea class="input" id="nRe" rows="3" style="resize:vertical" placeholder="写下你的想法..."></textarea></div><div class="form-group"><label class="form-label">标签</label><div id="nTags">'+S.tags.map(function(t){return '<label style="display:inline-flex;align-items:center;gap:3px;margin-right:10px;font-size:12px;cursor:pointer"><input type="checkbox" value="'+t.id+'"> '+t.name+'</label>'}).join('')+'</div></div><div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">取消</button><button class="btn btn-primary" onclick="saveNote()">保存</button></div>')}
+function saveNote(){var ex=$('#nEx').value.trim(),re=$('#nRe').value.trim(),tids=Array.from(document.querySelectorAll('#nTags input:checked')).map(function(c){return c.value});if(!ex){toast('摘录不能为空','error');return}S.notes.unshift({id:genId('note'),bookId:S.book?S.book.id:'',bookTitle:S.book?S.book.title:'',chapterTitle:S.book&&S.book.chapterTitles?S.book.chapterTitles[S.chapter]:'',excerpt:ex,remark:re,tagIds:tids,createdAt:Date.now(),updatedAt:Date.now()});save();closeModal();toast('笔记已保存','success')}
 var vMode='list',vIdx=0,vWords=[],vType='en2cn';
 function rVocab(){if(vMode==='review'){rReview();return}
-  $('#content').innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><h2 style="font-size:19px">Vocabulary ('+S.vocab.length+')</h2><div style="display:flex;gap:7px"><button class="btn btn-accent" onclick="startReview()">Start Review</button><button class="btn btn-outline" onclick="expVocab()">Export</button></div></div>'+
-  '<div style="margin-bottom:14px"><input class="input" style="max-width:220px" placeholder="Search..." oninput="fltVocab(this.value)"></div>'+
-  '<div id="vl">'+(S.vocab.length===0?'<div class="empty-state"><div class="icon">Vocab</div><div>No words yet. Click words while reading to add.</div></div>':S.vocab.map(function(v){return '<div class="vocab-item"><div><div style="font-size:15px;font-weight:600">'+v.word+'</div><div style="font-size:12px;color:#8a7e6d;margin-top:2px;max-width:400px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(v.definition||'').slice(0,70)+'</div></div><div style="text-align:right"><div style="font-size:11px;color:#8a7e6d">'+v.reviewCount+' reviews</div><button class="btn btn-sm btn-outline" onclick="delVocab(\''+v.id+'\')">Delete</button></div></div>'}).join(''))+'</div>';
+  $('#content').innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><h2 style="font-size:19px">生词本 ('+S.vocab.length+')</h2><div style="display:flex;gap:7px"><button class="btn btn-accent" onclick="startReview()">开始复习</button><button class="btn btn-outline" onclick="expVocab()">导出</button></div></div>'+
+  '<div style="margin-bottom:14px"><input class="input" style="max-width:220px" placeholder="搜索..." oninput="fltVocab(this.value)"></div>'+
+  '<div id="vl">'+(S.vocab.length===0?'<div class="empty-state"><div class="icon">📖</div><div>还没有生词，阅读时点击单词即可添加</div></div>':S.vocab.map(function(v){return '<div class="vocab-item"><div><div style="font-size:15px;font-weight:600">'+v.word+'</div><div style="font-size:12px;color:#8a7e6d;margin-top:2px;max-width:400px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(v.definition||'').slice(0,70)+'</div></div><div style="text-align:right"><div style="font-size:11px;color:#8a7e6d">复习 '+v.reviewCount+' 次</div><button class="btn btn-sm btn-outline" onclick="delVocab(\''+v.id+'\')">删除</button></div></div>'}).join(''))+'</div>';
 }
 function fltVocab(q){document.querySelectorAll('#vl .vocab-item').forEach(function(e,i){e.style.display=S.vocab[i].word.toLowerCase().indexOf(q.toLowerCase())>=0?'':'none'})}
 function delVocab(id){S.vocab=S.vocab.filter(function(v){return v.id!==id});save();rVocab()}
-function startReview(){if(!S.vocab.length){toast('Vocabulary is empty','error');return}vWords=S.vocab.slice().sort(function(){return Math.random()-0.5});vIdx=0;vMode='review';rVocab()}
+function startReview(){if(!S.vocab.length){toast('生词本为空','error');return}vWords=S.vocab.slice().sort(function(){return Math.random()-0.5});vIdx=0;vMode='review';rVocab()}
 function rReview(){
   var w=vWords[vIdx];if(!w){vMode='list';rVocab();return}
   var body='';
-  if(vType==='en2cn')body='<div class="review-prompt">'+w.word+'</div><input class="review-input" id="ri" placeholder="Type Chinese meaning..." onkeydown="if(event.key===\'Enter\')chkRev()"><button class="btn btn-primary" style="width:100%" onclick="chkRev()">Submit</button>';
-  else if(vType==='cn2en'){var cn=(w.definition||'').replace(/[^\u4e00-\u9fa5，。、；：]/g,'').slice(0,15)||w.word;body='<div class="review-prompt" style="font-size:20px">'+cn+'</div><input class="review-input" id="ri" placeholder="Type English word..." onkeydown="if(event.key===\'Enter\')chkRev()"><button class="btn btn-primary" style="width:100%" onclick="chkRev()">Submit</button>';}
+  if(vType==='en2cn')body='<div class="review-prompt">'+w.word+'</div><input class="review-input" id="ri" placeholder="输入中文释义..." onkeydown="if(event.key===\'Enter\')chkRev()"><button class="btn btn-primary" style="width:100%" onclick="chkRev()">提交</button>';
+  else if(vType==='cn2en'){var cn=(w.definition||'').replace(/[^\u4e00-\u9fa5，。、；：]/g,'').slice(0,15)||w.word;body='<div class="review-prompt" style="font-size:20px">'+cn+'</div><input class="review-input" id="ri" placeholder="输入英文单词..." onkeydown="if(event.key===\'Enter\')chkRev()"><button class="btn btn-primary" style="width:100%" onclick="chkRev()">提交</button>';}
   else{var correct=w.definition||'';var wrongs=S.vocab.filter(function(x){return x.id!==w.id}).sort(function(){return Math.random()-0.5}).slice(0,3).map(function(x){return x.definition||x.word});var opts=[correct].concat(wrongs).sort(function(){return Math.random()-0.5});body='<div class="review-prompt">'+w.word+'</div><div class="review-options">'+opts.map(function(o,i){return '<div class="review-option" onclick="chkChoice(this,\''+o.replace(/'/g,"\\'")+'\',\''+correct.replace(/'/g,"\\'")+'\')">'+String.fromCharCode(65+i)+'. '+o.slice(0,35)+'</div>'}).join('')+'</div>'}
-  $('#content').innerHTML='<div style="max-width:560px;margin:0 auto"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><button class="btn btn-outline btn-sm" onclick="vMode=\'list\';rVocab()">Back</button><span style="font-size:12px;color:#8a7e6d">'+(vIdx+1)+'/'+vWords.length+'</span></div><div style="justify-content:center;display:flex;gap:5px;margin-bottom:16px"><button class="btn btn-sm '+(vType==='en2cn'?'btn-primary':'btn-outline')+'" onclick="vType=\'en2cn\';rReview()">EN to CN</button><button class="btn btn-sm '+(vType==='cn2en'?'btn-primary':'btn-outline')+'" onclick="vType=\'cn2en\';rReview()">CN to EN</button><button class="btn btn-sm '+(vType==='choice'?'btn-primary':'btn-outline')+'" onclick="vType=\'choice\';rReview()">Choice</button></div><div class="review-card">'+body+'<div class="review-feedback" id="rf"></div></div></div>';
+  $('#content').innerHTML='<div style="max-width:560px;margin:0 auto"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><button class="btn btn-outline btn-sm" onclick="vMode=\'list\';rVocab()">← 返回</button><span style="font-size:12px;color:#8a7e6d">'+(vIdx+1)+'/'+vWords.length+'</span></div><div style="justify-content:center;display:flex;gap:5px;margin-bottom:16px"><button class="btn btn-sm '+(vType==='en2cn'?'btn-primary':'btn-outline')+'" onclick="vType=\'en2cn\';rReview()">英译中</button><button class="btn btn-sm '+(vType==='cn2en'?'btn-primary':'btn-outline')+'" onclick="vType=\'cn2en\';rReview()">中译英</button><button class="btn btn-sm '+(vType==='choice'?'btn-primary':'btn-outline')+'" onclick="vType=\'choice\';rReview()">选择题</button></div><div class="review-card">'+body+'<div class="review-feedback" id="rf"></div></div></div>';
 }
-function chkRev(){var w=vWords[vIdx],inp=$('#ri').value.trim().toLowerCase();var ok=vType==='en2cn'?(w.definition||'').indexOf(inp)>=0&&inp.length>0:inp===w.word.toLowerCase();var fb=$('#rf');fb.className='review-feedback show '+(ok?'correct':'wrong');fb.innerHTML=ok?'Correct!':'Answer: '+(vType==='cn2en'?w.word:w.definition);w.reviewCount++;if(ok)w.masteryLevel=Math.min(5,w.masteryLevel+1);save();setTimeout(function(){vIdx++;rReview()},ok?700:1800)}
-function chkChoice(el,chosen,correct){var ok=chosen===correct;document.querySelectorAll('.review-option').forEach(function(o){o.style.pointerEvents='none'});el.classList.add(ok?'correct':'wrong');if(!ok)document.querySelectorAll('.review-option').forEach(function(o){if(o.textContent.indexOf(correct.slice(0,8))>=0)o.classList.add('correct')});var w=vWords[vIdx];w.reviewCount++;if(ok)w.masteryLevel=Math.min(5,w.masteryLevel+1);save();var fb=$('#rf');fb.className='review-feedback show '+(ok?'correct':'wrong');fb.innerHTML=ok?'Correct!':correct;setTimeout(function(){vIdx++;rReview()},ok?700:1800)}
-function expVocab(){var csv='Word,Definition,Added\n'+S.vocab.map(function(v){return '"'+v.word+'","'+(v.definition||'').replace(/"/g,'""')+'","'+fmtDate(v.addedAt)+'"'}).join('\n');dl(csv,'vocabulary.csv','text/csv');toast('Exported','success')}
+function chkRev(){var w=vWords[vIdx],inp=$('#ri').value.trim().toLowerCase();var ok=vType==='en2cn'?(w.definition||'').indexOf(inp)>=0&&inp.length>0:inp===w.word.toLowerCase();var fb=$('#rf');fb.className='review-feedback show '+(ok?'correct':'wrong');fb.innerHTML=ok?'正确！':'答案: '+(vType==='cn2en'?w.word:w.definition);w.reviewCount++;if(ok)w.masteryLevel=Math.min(5,w.masteryLevel+1);save();setTimeout(function(){vIdx++;rReview()},ok?700:1800)}
+function chkChoice(el,chosen,correct){var ok=chosen===correct;document.querySelectorAll('.review-option').forEach(function(o){o.style.pointerEvents='none'});el.classList.add(ok?'correct':'wrong');if(!ok)document.querySelectorAll('.review-option').forEach(function(o){if(o.textContent.indexOf(correct.slice(0,8))>=0)o.classList.add('correct')});var w=vWords[vIdx];w.reviewCount++;if(ok)w.masteryLevel=Math.min(5,w.masteryLevel+1);save();var fb=$('#rf');fb.className='review-feedback show '+(ok?'correct':'wrong');fb.innerHTML=ok?'正确！':correct;setTimeout(function(){vIdx++;rReview()},ok?700:1800)}
+function expVocab(){var csv='Word,Definition,Added\n'+S.vocab.map(function(v){return '"'+v.word+'","'+(v.definition||'').replace(/"/g,'""')+'","'+fmtDate(v.addedAt)+'"'}).join('\n');dl(csv,'vocabulary.csv','text/csv');toast('已导出','success')}
 var nTag='',selNotes={};
 function rNotes(){var f=nTag?S.notes.filter(function(n){return n.tagIds.indexOf(nTag)>=0}):S.notes;
   var selCount=0;for(var k in selNotes)if(selNotes[k])selCount++;
-  var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><h2 style="font-size:19px">Notes ('+S.notes.length+')</h2><div style="display:flex;gap:7px">'+(selCount>=2?'<button class="btn btn-accent" onclick="sumNotes()">AI Summarize</button>':'')+'<button class="btn btn-outline" onclick="expNotes()">Export</button></div></div>';
-  html+='<div class="tag-bar"><span class="tag-item '+(nTag===''?'active':'')+'" onclick="nTag=\'\';rNotes()">All</span>'+S.tags.map(function(t){return '<span class="tag-item '+(nTag===t.id?'active':'')+'" style="border-left:3px solid '+t.color+'" onclick="nTag=\''+t.id+'\';rNotes()">'+t.name+'</span>'}).join('')+'</div>';
-  html+=f.length===0?'<div class="empty-state"><div class="icon">Notes</div><div>No notes yet</div></div>':f.map(function(n){return '<div class="note-item"><div style="display:flex;align-items:flex-start;gap:7px"><input type="checkbox" '+(selNotes[n.id]?'checked':'')+' onchange="togNote(\''+n.id+'\')"><div style="flex:1"><div style="font-size:13px;line-height:1.6;border-left:3px solid #8b6914;padding-left:10px;margin-bottom:6px">'+n.excerpt.slice(0,180)+(n.excerpt.length>180?'...':'')+'</div>'+(n.remark?'<div style="font-size:12px;color:#8a7e6d;margin-bottom:6px">Note: '+n.remark+'</div>':'')+'<div style="display:flex;justify-content:space-between;font-size:11px;color:#8a7e6d"><div>'+n.tagIds.map(function(tid){var t=S.tags.find(function(x){return x.id===tid});return t?'<span class="badge" style="background:'+t.color+'22;color:'+t.color+'">'+t.name+'</span>':''}).join('')+'</div><div>'+(n.bookTitle||'')+' - '+fmtDate(n.createdAt)+'</div></div></div><div style="display:flex;gap:4px"><button class="btn btn-sm btn-outline" onclick="edNote(\''+n.id+'\')">Edit</button><button class="btn btn-sm btn-outline" onclick="delNote(\''+n.id+'\')">Delete</button></div></div></div>'}).join('');
+  var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><h2 style="font-size:19px">笔记 ('+S.notes.length+')</h2><div style="display:flex;gap:7px">'+(selCount>=2?'<button class="btn btn-accent" onclick="sumNotes()">AI 总结</button>':'')+'<button class="btn btn-outline" onclick="expNotes()">导出</button></div></div>';
+  html+='<div class="tag-bar"><span class="tag-item '+(nTag===''?'active':'')+'" onclick="nTag=\'\';rNotes()">全部</span>'+S.tags.map(function(t){return '<span class="tag-item '+(nTag===t.id?'active':'')+'" style="border-left:3px solid '+t.color+'" onclick="nTag=\''+t.id+'\';rNotes()">'+t.name+'</span>'}).join('')+'</div>';
+  html+=f.length===0?'<div class="empty-state"><div class="icon">📝</div><div>还没有笔记，阅读时选中文本即可添加</div></div>':f.map(function(n){return '<div class="note-item"><div style="display:flex;align-items:flex-start;gap:7px"><input type="checkbox" '+(selNotes[n.id]?'checked':'')+' onchange="togNote(\''+n.id+'\')"><div style="flex:1"><div style="font-size:13px;line-height:1.6;border-left:3px solid #8b6914;padding-left:10px;margin-bottom:6px">'+n.excerpt.slice(0,180)+(n.excerpt.length>180?'...':'')+'</div>'+(n.remark?'<div style="font-size:12px;color:#8a7e6d;margin-bottom:6px">备注: '+n.remark+'</div>':'')+'<div style="display:flex;justify-content:space-between;font-size:11px;color:#8a7e6d"><div>'+n.tagIds.map(function(tid){var t=S.tags.find(function(x){return x.id===tid});return t?'<span class="badge" style="background:'+t.color+'22;color:'+t.color+'">'+t.name+'</span>':''}).join('')+'</div><div>'+(n.bookTitle||'')+' - '+fmtDate(n.createdAt)+'</div></div></div><div style="display:flex;gap:4px"><button class="btn btn-sm btn-outline" onclick="edNote(\''+n.id+'\')">编辑</button><button class="btn btn-sm btn-outline" onclick="delNote(\''+n.id+'\')">删除</button></div></div></div>'}).join('');
   $('#content').innerHTML=html;
 }
 function togNote(id){selNotes[id]=!selNotes[id];rNotes()}
-function delNote(id){if(!confirm('Delete this note?'))return;S.notes=S.notes.filter(function(n){return n.id!==id});save();rNotes()}
-function edNote(id){var n=S.notes.find(function(x){return x.id===id});showModal('<div class="modal-title">Edit Note</div><div class="form-group"><label class="form-label">Excerpt</label><textarea class="input" id="ene" rows="4">'+n.excerpt+'</textarea></div><div class="form-group"><label class="form-label">Remark</label><textarea class="input" id="enr" rows="3">'+(n.remark||'')+'</textarea></div><div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="svNoteEd(\''+id+'\')">Save</button></div>')}
+function delNote(id){if(!confirm('确定删除这条笔记吗？'))return;S.notes=S.notes.filter(function(n){return n.id!==id});save();rNotes()}
+function edNote(id){var n=S.notes.find(function(x){return x.id===id});showModal('<div class="modal-title">编辑笔记</div><div class="form-group"><label class="form-label">原文摘录</label><textarea class="input" id="ene" rows="4">'+n.excerpt+'</textarea></div><div class="form-group"><label class="form-label">备注</label><textarea class="input" id="enr" rows="3">'+(n.remark||'')+'</textarea></div><div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">取消</button><button class="btn btn-primary" onclick="svNoteEd(\''+id+'\')">保存</button></div>')}
 function svNoteEd(id){var n=S.notes.find(function(x){return x.id===id});n.excerpt=$('#ene').value;n.remark=$('#enr').value;n.updatedAt=Date.now();save();closeModal();rNotes()}
-function sumNotes(){var ns=S.notes.filter(function(n){return selNotes[n.id]});if(ns.length<2){toast('Select at least 2 notes','error');return}showModal('<div class="modal-title">AI Note Summary</div><div id="sr" style="max-height:380px;overflow-y:auto"><div style="color:#8a7e6d;text-align:center;padding:18px">AI is summarizing...</div></div><div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Close</button></div>');callAI('Summarize key points and themes of these notes. Do not write a book review. Group by themes. Markdown format.\n\n'+ns.map(function(n,i){return 'Note '+(i+1)+':\nExcerpt:'+n.excerpt+'\nRemark:'+(n.remark||'None')}).join('\n\n'),{timeoutMs:45000}).then(function(r){$('#sr').innerHTML=r.replace(/\n/g,'<br>')}).catch(function(e){$('#sr').innerHTML='<div style="color:#c0392b">Failed: '+e.message+'</div>'})}
+function sumNotes(){var ns=S.notes.filter(function(n){return selNotes[n.id]});if(ns.length<2){toast('至少选择2条笔记','error');return}showModal('<div class="modal-title">AI Note Summary</div><div id="sr" style="max-height:380px;overflow-y:auto"><div style="color:#8a7e6d;text-align:center;padding:18px">AI is summarizing...</div></div><div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Close</button></div>');callAI('Summarize key points and themes of these notes. Do not write a book review. Group by themes. Markdown format.\n\n'+ns.map(function(n,i){return 'Note '+(i+1)+':\nExcerpt:'+n.excerpt+'\nRemark:'+(n.remark||'None')}).join('\n\n'),{timeoutMs:45000}).then(function(r){$('#sr').innerHTML=r.replace(/\n/g,'<br>')}).catch(function(e){$('#sr').innerHTML='<div style="color:#c0392b">Failed: '+e.message+'</div>'})}
 function expNotes(){var md='# Reading Notes\n\n'+S.notes.map(function(n){return '## '+(n.bookTitle||'')+' - '+fmtDate(n.createdAt)+'\n\n> '+n.excerpt+'\n\n'+(n.remark?'**Remark:** '+n.remark+'\n':'')}).join('\n---\n');dl(md,'notes.md','text/markdown');toast('Exported','success')}
 var curQuiz=null,curQ=0;
 function rQuiz(){if(curQuiz){rTake();return}
-  $('#content').innerHTML='<div style="margin-bottom:14px"><h2 style="font-size:19px">Quizzes ('+S.quizzes.length+')</h2></div><div class="quiz-list">'+(S.quizzes.length===0?'<div class="empty-state"><div class="icon">Quiz</div><div>No quizzes yet. Select text while reading to generate.</div></div>':S.quizzes.map(function(q){return '<div class="quiz-set-item" onclick="openQuiz(\''+q.id+'\')"><div><div style="font-weight:600;font-size:13px">'+(q.bookTitle||'')+' - '+(q.chapterTitle||'Paragraph')+'</div><div style="font-size:11px;color:#8a7e6d;margin-top:3px">'+q.questions.length+' questions - '+fmtDate(q.createdAt)+(q.completed?' - Accuracy '+Math.round((q.correctCount||0)/q.questions.length*100)+'%':'')+'</div></div><div>'+(q.completed?'<span class="badge badge-success">Done</span>':'<span class="badge badge-primary">Todo</span>')+'</div></div>'}).join(''))+'</div>'+(S.records.length?'<h3 style="font-size:15px;margin:20px 0 10px">History</h3><div class="quiz-list">'+S.records.slice(0,8).map(function(r){return '<div class="quiz-set-item"><div><div style="font-weight:500;font-size:13px">'+r.bookTitle+' - '+r.chapterTitle+'</div><div style="font-size:11px;color:#8a7e6d">'+r.correctCount+'/'+r.totalCount+' correct - '+fmtDate(r.completedAt)+'</div></div><span class="badge '+(r.correctCount/r.totalCount>=0.6?'badge-success':'badge-danger')+'">'+Math.round(r.correctCount/r.totalCount*100)+'%</span></div>'}).join('')+'</div>':'');
+  $('#content').innerHTML='<div style="margin-bottom:14px"><h2 style="font-size:19px">习题 ('+S.quizzes.length+')</h2></div><div class="quiz-list">'+(S.quizzes.length===0?'<div class="empty-state"><div class="icon">❓</div><div>还没有习题，阅读时选中文本即可生成</div></div>':S.quizzes.map(function(q){return '<div class="quiz-set-item" onclick="openQuiz(\''+q.id+'\')"><div><div style="font-weight:600;font-size:13px">'+(q.bookTitle||'')+' - '+(q.chapterTitle||'选段')+'</div><div style="font-size:11px;color:#8a7e6d;margin-top:3px">'+q.questions.length+' 题 - '+fmtDate(q.createdAt)+(q.completed?' - 正确率 '+Math.round((q.correctCount||0)/q.questions.length*100)+'%':'')+'</div></div><div>'+(q.completed?'<span class="badge badge-success">已完成</span>':'<span class="badge badge-primary">待做</span>')+'</div></div>'}).join(''))+'</div>'+(S.records.length?'<h3 style="font-size:15px;margin:20px 0 10px">历史记录</h3><div class="quiz-list">'+S.records.slice(0,8).map(function(r){return '<div class="quiz-set-item"><div><div style="font-weight:500;font-size:13px">'+r.bookTitle+' - '+r.chapterTitle+'</div><div style="font-size:11px;color:#8a7e6d">'+r.correctCount+'/'+r.totalCount+' 正确 - '+fmtDate(r.completedAt)+'</div></div><span class="badge '+(r.correctCount/r.totalCount>=0.6?'badge-success':'badge-danger')+'">'+Math.round(r.correctCount/r.totalCount*100)+'%</span></div>'}).join('')+'</div>':'');
 }
 function openQuiz(id){curQuiz=S.quizzes.find(function(q){return q.id===id});curQ=0;rQuiz()}
 function rTake(){var q=curQuiz.questions[curQ];
-  $('#content').innerHTML='<div style="max-width:900px;margin:0 auto"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px"><button class="btn btn-outline btn-sm" onclick="curQuiz=null;rQuiz()">Back</button><span style="font-size:14px;color:#8a7e6d">Question '+(curQ+1)+'/'+curQuiz.questions.length+'</span></div>'+
+  $('#content').innerHTML='<div style="max-width:900px;margin:0 auto"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px"><button class="btn btn-outline btn-sm" onclick="curQuiz=null;rQuiz()">← 返回</button><span style="font-size:14px;color:#8a7e6d">第 '+(curQ+1)+' / '+curQuiz.questions.length+' 题</span></div>'+
   '<div class="quiz-question"><div class="quiz-q-text">'+(curQ+1)+'. '+q.question+'</div>'+(q.options||[]).map(function(o,i){return '<div class="quiz-option" onclick="selOpt(this,'+i+')">'+o+'</div>'}).join('')+'<div class="quiz-explanation" id="qe">'+(q.explanation?'Explanation: '+q.explanation:'')+'</div></div>'+
-  '<div style="display:flex;justify-content:space-between"><button class="btn btn-outline" '+(curQ===0?'disabled':'')+' onclick="prevQ()">Prev</button><button class="btn btn-primary" id="nxtBtn" onclick="nxtQ()" disabled>'+(curQ<curQuiz.questions.length-1?'Next':'Finish')+'</button></div></div>';
+  '<div style="display:flex;justify-content:space-between"><button class="btn btn-outline" '+(curQ===0?'disabled':'')+' onclick="prevQ()">上一题</button><button class="btn btn-primary" id="nxtBtn" onclick="nxtQ()" disabled>'+(curQ<curQuiz.questions.length-1?'下一题':'完成')+'</button></div></div>';
 }
 function selOpt(el,idx){var q=curQuiz.questions[curQ];document.querySelectorAll('.quiz-option').forEach(function(o){o.style.pointerEvents='none'});var ci=q.answer.trim().toUpperCase().charCodeAt(0)-65;if(idx===ci)el.classList.add('correct');else{el.classList.add('wrong');var co=document.querySelectorAll('.quiz-option')[ci];if(co)co.classList.add('correct')}$('#qe').classList.add('show');$('#nxtBtn').disabled=false;if(idx!==ci){var ex=S.wrong.find(function(w){return w.questionId===q.id});if(ex){ex.wrongCount++;ex.lastWrongAt=Date.now()}else S.wrong.unshift({id:genId('wrong'),questionId:q.id,question:q,wrongAnswer:String.fromCharCode(65+idx),wrongCount:1,lastWrongAt:Date.now(),bookId:curQuiz.bookId,bookTitle:curQuiz.bookTitle})}else curQuiz.correctCount=(curQuiz.correctCount||0)+1;save()}
 function prevQ(){if(curQ>0){curQ--;rTake()}}
-function nxtQ(){if(curQ<curQuiz.questions.length-1){curQ++;rTake()}else{curQuiz.completed=true;S.records.unshift({id:genId('rec'),quizSetId:curQuiz.id,bookTitle:curQuiz.bookTitle,chapterTitle:curQuiz.chapterTitle,totalCount:curQuiz.questions.length,correctCount:curQuiz.correctCount||0,completedAt:Date.now()});S.stats.totalQuizzesTaken++;var ac=0,at=0;for(var i=0;i<S.records.length;i++){ac+=S.records[i].correctCount;at+=S.records[i].totalCount}S.stats.averageAccuracy=at>0?Math.round(ac/at*100):0;save();alert('Done! Accuracy: '+(curQuiz.correctCount||0)+'/'+curQuiz.questions.length);curQuiz=null;rQuiz()}}
-function rWrong(){$('#content').innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><h2 style="font-size:19px">Wrong Book ('+S.wrong.length+')</h2><button class="btn btn-outline" onclick="clrWrong()">Clear All</button></div><div>'+(S.wrong.length===0?'<div class="empty-state"><div class="icon">OK</div><div>No wrong questions</div></div>':S.wrong.map(function(w){return '<div class="quiz-question"><div class="quiz-q-text">'+w.question.question+'</div>'+(w.question.options||[]).map(function(o,i){return '<div class="quiz-option '+(String.fromCharCode(65+i)===w.question.answer?'correct':'')+'">'+o+'</div>'}).join('')+'<div style="margin-top:8px;font-size:11px;color:#8a7e6d">Your answer: '+w.wrongAnswer+' - Wrong '+w.wrongCount+' times - '+(w.bookTitle||'')+'</div><div style="margin-top:6px"><button class="btn btn-sm btn-outline" onclick="rmWrong(\''+w.id+'\')">Remove</button></div></div>'}).join(''))+'</div>'}
+function nxtQ(){if(curQ<curQuiz.questions.length-1){curQ++;rTake()}else{curQuiz.completed=true;S.records.unshift({id:genId('rec'),quizSetId:curQuiz.id,bookTitle:curQuiz.bookTitle,chapterTitle:curQuiz.chapterTitle,totalCount:curQuiz.questions.length,correctCount:curQuiz.correctCount||0,completedAt:Date.now()});S.stats.totalQuizzesTaken++;var ac=0,at=0;for(var i=0;i<S.records.length;i++){ac+=S.records[i].correctCount;at+=S.records[i].totalCount}S.stats.averageAccuracy=at>0?Math.round(ac/at*100):0;save();alert('完成！正确率: '+(curQuiz.correctCount||0)+'/'+curQuiz.questions.length);curQuiz=null;rQuiz()}}
+function rWrong(){$('#content').innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><h2 style="font-size:19px">错题本 ('+S.wrong.length+')</h2><button class="btn btn-outline" onclick="clrWrong()">清空全部</button></div><div>'+(S.wrong.length===0?'<div class="empty-state"><div class="icon">✅</div><div>还没有错题</div></div>':S.wrong.map(function(w){return '<div class="quiz-question"><div class="quiz-q-text">'+w.question.question+'</div>'+(w.question.options||[]).map(function(o,i){return '<div class="quiz-option '+(String.fromCharCode(65+i)===w.question.answer?'correct':'')+'">'+o+'</div>'}).join('')+'<div style="margin-top:8px;font-size:11px;color:#8a7e6d">你的答案: '+w.wrongAnswer+' · 错 '+w.wrongCount+' 次 · '+(w.bookTitle||'')+'</div><div style="margin-top:6px"><button class="btn btn-sm btn-outline" onclick="rmWrong(\''+w.id+'\')">移除</button></div></div>'}).join(''))+'</div>'}
 function rmWrong(id){S.wrong=S.wrong.filter(function(w){return w.id!==id});save();rWrong()}
-function clrWrong(){if(!confirm('Clear all wrong questions?'))return;S.wrong=[];save();rWrong()}
+function clrWrong(){if(!confirm('确定清空所有错题吗？'))return;S.wrong=[];save();rWrong()}
 function rDash(){var s=S.stats;var daily=[];for(var i=29;i>=0;i--){var d=new Date(Date.now()-i*86400000);daily.push({date:fmtDate(d.getTime()),pages:Math.floor(Math.random()*8)+(i%7===0?0:2)})}var mx=1;for(var di=0;di<daily.length;di++)mx=Math.max(mx,daily[di].pages);
-  $('#content').innerHTML='<div class="dashboard-grid"><div class="kpi-card"><div class="kpi-value">'+S.books.length+'</div><div class="kpi-label">Books</div></div><div class="kpi-card"><div class="kpi-value">'+s.totalWordsLookedUp+'</div><div class="kpi-label">Words Looked Up</div></div><div class="kpi-card"><div class="kpi-value">'+s.totalQuizzesTaken+'</div><div class="kpi-label">Quizzes Taken</div></div><div class="kpi-card"><div class="kpi-value">'+s.averageAccuracy+'%</div><div class="kpi-label">Avg Accuracy</div></div></div>'+
-  '<div class="chart-container"><div style="font-size:14px;font-weight:600;margin-bottom:14px">Reading Trend (Last 30 Days)</div><div style="display:flex;align-items:flex-end;gap:2px;height:110px">'+daily.map(function(d){return '<div style="flex:1;display:flex;flex-direction:column;align-items:center" title="'+d.date+': '+d.pages+' pages"><div style="width:100%;background:#2c3e6b;border-radius:2px 2px 0 0;height:'+(d.pages/mx*100)+'%;min-height:2px"></div></div>'}).join('')+'</div><div style="display:flex;justify-content:space-between;font-size:10px;color:#8a7e6d;margin-top:3px"><span>'+daily[0].date.slice(5)+'</span><span>'+daily[14].date.slice(5)+'</span><span>'+daily[29].date.slice(5)+'</span></div></div>'+
-  '<div class="chart-container"><div style="font-size:14px;font-weight:600;margin-bottom:14px">Chapter Difficulty Heatmap</div><div class="heatmap">'+S.books.filter(function(b){return b.totalChapters>0}).map(function(b){return b.chapterTitles.map(function(t,i){var st=Math.max(1,Math.min(5,Math.round(Math.random()*3)+1));var cols=['#e8f5e9','#c8e6c9','#fff9c4','#ffe0b2','#ffcdd2'];return '<div class="heatmap-cell" style="background:'+cols[st-1]+'" title="'+b.title+' - '+t+'"><div style="font-weight:600;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+t.slice(0,14)+'</div><div class="stars">'+Array(st+1).join('*')+Array(6-st).join('.')+'</div><div style="font-size:10px;color:#8a7e6d">'+b.title.slice(0,9)+'</div></div>'})}).join('')||'<div style="color:#8a7e6d">No data</div>'+'</div></div>'+
-  '<button class="btn btn-outline" onclick="expStats()">Export Stats</button>';
+  $('#content').innerHTML='<div class="dashboard-grid"><div class="kpi-card"><div class="kpi-value">'+S.books.length+'</div><div class="kpi-label">书籍</div></div><div class="kpi-card"><div class="kpi-value">'+s.totalWordsLookedUp+'</div><div class="kpi-label">查词次数</div></div><div class="kpi-card"><div class="kpi-value">'+s.totalQuizzesTaken+'</div><div class="kpi-label">做题次数</div></div><div class="kpi-card"><div class="kpi-value">'+s.averageAccuracy+'%</div><div class="kpi-label">平均正确率</div></div></div>'+
+  '<div class="chart-container"><div style="font-size:14px;font-weight:600;margin-bottom:14px">近30天阅读趋势</div><div style="display:flex;align-items:flex-end;gap:2px;height:110px">'+daily.map(function(d){return '<div style="flex:1;display:flex;flex-direction:column;align-items:center" title="'+d.date+': '+d.pages+' pages"><div style="width:100%;background:#2c3e6b;border-radius:2px 2px 0 0;height:'+(d.pages/mx*100)+'%;min-height:2px"></div></div>'}).join('')+'</div><div style="display:flex;justify-content:space-between;font-size:10px;color:#8a7e6d;margin-top:3px"><span>'+daily[0].date.slice(5)+'</span><span>'+daily[14].date.slice(5)+'</span><span>'+daily[29].date.slice(5)+'</span></div></div>'+
+  '<div class="chart-container"><div style="font-size:14px;font-weight:600;margin-bottom:14px">章节难度热力图</div><div class="heatmap">'+S.books.filter(function(b){return b.totalChapters>0}).map(function(b){return b.chapterTitles.map(function(t,i){var st=Math.max(1,Math.min(5,Math.round(Math.random()*3)+1));var cols=['#e8f5e9','#c8e6c9','#fff9c4','#ffe0b2','#ffcdd2'];return '<div class="heatmap-cell" style="background:'+cols[st-1]+'" title="'+b.title+' - '+t+'"><div style="font-weight:600;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+t.slice(0,14)+'</div><div class="stars">'+Array(st+1).join('*')+Array(6-st).join('.')+'</div><div style="font-size:10px;color:#8a7e6d">'+b.title.slice(0,9)+'</div></div>'})}).join('')||'<div style="color:#8a7e6d">No data</div>'+'</div></div>'+
+  '<button class="btn btn-outline" onclick="expStats()">导出数据</button>';
 }
 function expStats(){var s=S.stats;var csv='Metric,Value\nBooks,'+S.books.length+'\nWords Looked Up,'+s.totalWordsLookedUp+'\nQuizzes Taken,'+s.totalQuizzesTaken+'\nAvg Accuracy,'+s.averageAccuracy+'%\nVocabulary,'+S.vocab.length+'\nNotes,'+S.notes.length;dl(csv,'reading-stats.csv','text/csv');toast('Exported','success')}
 function rSettings(){var s=S.settings;
-  $('#content').innerHTML='<div class="settings-section"><div style="font-size:15px;font-weight:600;margin-bottom:14px">AI Settings</div><div class="settings-row"><span class="settings-label">Provider</span><select class="input" style="flex:1"><option value="kimi">Kimi (Moonshot)</option></select></div><div class="settings-row"><span class="settings-label">API Key</span><input class="input" style="flex:1" id="sKey" type="password" value="'+s.ai.apiKey+'" placeholder="sk-..."></div><div class="settings-row"><span class="settings-label">Model</span><input class="input" style="flex:1" id="sModel" value="'+s.ai.model+'"></div><div class="settings-row"><span class="settings-label">Base URL</span><input class="input" style="flex:1" id="sUrl" value="'+s.ai.baseUrl+'"></div><button class="btn btn-primary" onclick="testAI()">Test Connection</button> <button class="btn btn-outline" onclick="svSet()">Save</button></div>'+
-  '<div class="settings-section"><div style="font-size:15px;font-weight:600;margin-bottom:14px">Reading Preferences</div><div class="settings-row"><span class="settings-label">Font Size</span><input type="range" min="12" max="32" value="'+s.reading.fontSize+'" oninput="document.getElementById(\'fsv\').textContent=this.value+\'px\'"><span id="fsv">'+s.reading.fontSize+'px</span></div><div class="settings-row"><span class="settings-label">Line Height</span><input type="range" min="1.2" max="2.5" step="0.1" value="'+s.reading.lineHeight+'" oninput="document.getElementById(\'lhv\').textContent=this.value"><span id="lhv">'+s.reading.lineHeight+'</span></div></div>'+
-  '<div class="settings-section"><div style="font-size:15px;font-weight:600;margin-bottom:14px">Data Management</div><p style="font-size:12px;color:#8a7e6d;margin-bottom:10px">Book text stays in your browser. Never uploaded to server.</p><div style="display:flex;gap:7px;flex-wrap:wrap"><button class="btn btn-outline" onclick="expAll()">Export All</button><button class="btn btn-outline" onclick="expVocab()">Export Vocab</button><button class="btn btn-outline" onclick="expNotes()">Export Notes</button><button class="btn btn-outline" onclick="expStats()">Export Stats</button><button class="btn btn-danger" onclick="clrAll()">Clear All Data</button></div></div>';
+  $('#content').innerHTML='<div class="settings-section"><div style="font-size:15px;font-weight:600;margin-bottom:14px">AI 设置</div><div class="settings-row"><span class="settings-label">服务商</span><select class="input" style="flex:1"><option value="kimi">Kimi (Moonshot)</option></select></div><div class="settings-row"><span class="settings-label">API 密钥</span><input class="input" style="flex:1" id="sKey" type="password" value="'+s.ai.apiKey+'" placeholder="sk-..."></div><div class="settings-row"><span class="settings-label">模型</span><input class="input" style="flex:1" id="sModel" value="'+s.ai.model+'"></div><div class="settings-row"><span class="settings-label">接口地址</span><input class="input" style="flex:1" id="sUrl" value="'+s.ai.baseUrl+'"></div><button class="btn btn-primary" onclick="testAI()">测试连接</button> <button class="btn btn-outline" onclick="svSet()">保存</button></div>'+
+  '<div class="settings-section"><div style="font-size:15px;font-weight:600;margin-bottom:14px">阅读偏好</div><div class="settings-row"><span class="settings-label">字体大小</span><input type="range" min="12" max="32" value="'+s.reading.fontSize+'" oninput="document.getElementById(\'fsv\').textContent=this.value+\'px\'"><span id="fsv">'+s.reading.fontSize+'px</span></div><div class="settings-row"><span class="settings-label">行高</span><input type="range" min="1.2" max="2.5" step="0.1" value="'+s.reading.lineHeight+'" oninput="document.getElementById(\'lhv\').textContent=this.value"><span id="lhv">'+s.reading.lineHeight+'</span></div></div>'+
+  '<div class="settings-section"><div style="font-size:15px;font-weight:600;margin-bottom:14px">数据管理</div><p style="font-size:12px;color:#8a7e6d;margin-bottom:10px">书籍文本保存在浏览器本地，不会上传到服务器。</p><div style="display:flex;gap:7px;flex-wrap:wrap"><button class="btn btn-outline" onclick="expAll()">导出全部</button><button class="btn btn-outline" onclick="expVocab()">导出生词</button><button class="btn btn-outline" onclick="expNotes()">导出笔记</button><button class="btn btn-outline" onclick="expStats()">导出统计</button><button class="btn btn-danger" onclick="clrAll()">清空全部数据</button></div></div>';
 }
-function svSet(){S.settings.ai.apiKey=$('#sKey').value;S.settings.ai.model=$('#sModel').value;S.settings.ai.baseUrl=$('#sUrl').value;save();toast('Saved','success')}
-function testAI(){svSet();callAI('Reply with: OK',{timeoutMs:15000}).then(function(r){toast('Connected: '+r.slice(0,20),'success')}).catch(function(e){toast('Failed: '+e.message,'error')})}
+function svSet(){S.settings.ai.apiKey=$('#sKey').value;S.settings.ai.model=$('#sModel').value;S.settings.ai.baseUrl=$('#sUrl').value;save();toast('已保存','success')}
+function testAI(){svSet();callAI('Reply with: OK',{timeoutMs:15000}).then(function(r){toast('连接成功: '+r.slice(0,20),'success')}).catch(function(e){toast('连接失败: '+e.message,'error')})}
 function expAll(){var d={books:S.books,vocab:S.vocab,notes:S.notes,tags:S.tags,quizzes:S.quizzes,records:S.records,wrong:S.wrong,stats:S.stats,settings:S.settings,exportedAt:new Date().toISOString()};dl(JSON.stringify(d,null,2),'ai-book-reader-backup.json','application/json');toast('Exported','success')}
-function clrAll(){if(!confirm('Clear ALL data? Cannot be undone!'))return;if(!confirm('Again: All books, notes, vocab will be deleted!'))return;localStorage.clear();location.reload()}
+function clrAll(){if(!confirm('确定清空全部数据？此操作不可撤销！'))return;if(!confirm('再次确认：所有书籍、笔记、生词都将被删除！'))return;localStorage.clear();location.reload()}
 function dl(content,fn,type){var blob=new Blob([content],{type:type});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download=fn;a.click();URL.revokeObjectURL(url)}
 function init(){
   var chain=Promise.resolve();
   for(var k in MOCK_CH){(function(key){chain=chain.then(function(){return idbGet(key).then(function(ex){if(!ex)return idbPut(key,MOCK_CH[key])})})})(k)}
-  chain.then(function(){nav('shelf')}).catch(function(e){console.error('Init failed:',e);alert('Init failed: '+e.message)});
+  chain.then(function(){nav('shelf')}).catch(function(e){console.error('Init failed:',e);alert('初始化失败: '+e.message)});
 }
 init();
 </script>
